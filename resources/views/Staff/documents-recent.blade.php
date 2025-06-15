@@ -6,94 +6,114 @@ $page = 'recent';
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 
-
 <style>
   body {
-    background-color: #f8f9fa;
+    background: transparent;
   }
 
   .az-content-body {
-    padding-top: 20px;
+    padding-top: 0;
+  }
+
+  .az-dashboard-one-title {
+    margin-bottom: 32px;
+  }
+
+  .az-dashboard-one-title h2 {
+    font-size: 32px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
   }
 
   .drive-container {
-    padding: 20px;
+    padding: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 20px; 
-    justify-content: flex-start; 
+    gap: 20px;
+    justify-content: flex-start;
   }
 
   .drive-item {
-    width: 200px; 
-    height: 220px; 
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    width: 240px;
+    height: 260px;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     text-align: center;
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; 
+    justify-content: space-between;
     position: relative;
-    transition: all 0.2s ease;
-    background-color: #ffffff;
-    padding: 15px;
-    box-sizing: border-box; 
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 20px 16px;
+    box-sizing: border-box;
+    padding-bottom: 60px; 
+  }
 
-    padding-bottom: 50px; 
+  /* Increase height for rejected items */
+  .drive-item.rejected-item {
+    height: 260px !important;
+    padding-bottom: 60px !important;
   }
 
   .drive-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    background-color: #e9f0ff;
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.95);
   }
 
   .drive-item .icon-wrapper {
-    flex-grow: 1; 
+    flex-grow: 1;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  .folder-item i.fimg,
-  .file-item i.fimg {
-    font-size: 70px;
-    color: #4e73df;
-    transition: color 0.2s ease;
+  .folder-item i.fimg {
+    font-size: 80px;
+    color: #667eea;
+    transition: all 0.3s ease;
   }
 
   .file-item i.fimg {
-    color: #6c757d;
+    font-size: 80px; 
+    color: #718096;
+    transition: all 0.3s ease;
   }
 
   .drive-item:hover .folder-item i.fimg,
   .drive-item:hover .file-item i.fimg {
-    color: #3660d1;
+    color: #764ba2;
+    transform: scale(1.1);
   }
 
-
   .status-icon {
-    font-size: 20px;
+    font-size: 22px;
     position: absolute;
-    top: 10px;
-    right: 10px;
-    color: #707070;
+    top: 16px;
+    right: 16px;
+    color: #718096;
     z-index: 10; 
   }
 
   .status-icon.text-success {
-    color: #28a745 !important;
+    color: #48bb78 !important;
   }
 
   .status-icon.text-warning {
-    color: #ffc107 !important;
+    color: #ed8936 !important;
   }
 
-
   .top-star-icon {
-    font-size: 18px; 
-    color: #6c757d;
+    font-size: 20px; 
+    color: #cbd5e0;
     background: transparent;
     border: none;
     outline: none;
@@ -101,117 +121,221 @@ $page = 'recent';
     padding: 0;
     margin: 0;
     line-height: 1;
-    transition: color 0.2s ease;
+    transition: all 0.3s ease;
     
     position: absolute; 
-    top: 10px; 
-    left: 10px; 
+    top: 16px; 
+    left: 16px; 
     z-index: 10; 
 
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 8px;
   }
 
   .top-star-icon.starred {
-    color: #ffc107;
+    color: #f6e05e;
   }
 
   .top-star-icon:hover {
-    color: #ffc107;
+    color: #f6e05e;
+    background: rgba(246, 224, 94, 0.1);
   }
 
-
   .drive-title {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    margin-top: 10px;
-    color: #343a40;
+    margin-top: 12px;
+    color: #2d3748;
+    padding: 0 4px;
+    line-height: 1.3;
+    max-width: 100%;
   }
 
   .drive-details {
     font-size: 12px;
-    color: #888;
-    margin-top: 2px;
+    color: #4a5568;
+    font-weight: 500;
+    margin-top: 3px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    padding: 0 4px;
+    line-height: 1.2;
+    max-width: 100%;
   }
-
 
   .actions-container {
-    position: absolute; 
-    bottom: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 45px; 
-    background-color: #ffffff; 
-    border-top: 1px solid #eee; 
-    box-sizing: border-box; 
-    z-index: 2; 
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(74, 85, 104, 0.1);
+    border-radius: 0 0 16px 16px;
+    box-sizing: border-box;
+    z-index: 2;
 
-    display: flex; 
-    justify-content: flex-end; 
-    align-items: center; 
-    padding: 0 10px; 
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 16px;
   }
-
 
   .actions-container .delete-btn,
   .actions-container .rename-btn {
-    width: 35px; 
-    height: 35px; 
+    width: 36px;
+    height: 36px;
     
-    display: flex; 
+    display: flex;
     justify-content: center;
     align-items: center;
 
-    font-size: 18px; 
-    color: #6c757d;
+    font-size: 16px;
+    color: #718096;
     background: transparent;
-    border: none; 
-    outline: none; 
+    border: none;
+    outline: none;
     cursor: pointer;
-    padding: 0; 
-    margin-left: 10px; 
-    transition: color 0.2s ease;
-    flex-shrink: 0; 
+    padding: 0;
+    margin-left: 8px;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    border-radius: 8px;
   }
-
-
 
   .actions-container button:first-child {
       margin-left: 0;
   }
 
   .actions-container .delete-btn:hover {
-    color: #dc3545;
+    color: #e53e3e;
+    background: rgba(229, 62, 62, 0.1);
   }
 
   .actions-container .rename-btn:hover {
-    color: #007bff;
+    color: #3182ce;
+    background: rgba(49, 130, 206, 0.1);
   }
 
-  .file-item[style*="lightgray"] {
-    background-color: #f0f0f0 !important;
+  /* Rejected Items Styling */
+  .rejected-item {
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 2px solid rgba(229, 62, 62, 0.3) !important;
+    opacity: 0.9;
+    position: relative;
+    height: 260px !important;
+    padding: 20px 16px 60px 16px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    box-shadow: 0 8px 32px rgba(229, 62, 62, 0.15) !important;
+  }
+
+  .rejected-item:hover {
+    transform: translateY(-8px) scale(1.02) !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    box-shadow: 0 16px 48px rgba(229, 62, 62, 0.2) !important;
     cursor: not-allowed;
-    box-shadow: none;
   }
 
-  .file-item[style*="lightgray"]:hover {
-    transform: none;
-    box-shadow: none;
+  .rejected-item .icon-wrapper {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
+  .rejected-icon {
+    color: #a0a0a0 !important;
+    opacity: 0.8;
+  }
 
+  .rejected-overlay {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 10;
+  }
+
+  .rejected-badge {
+    background: linear-gradient(135deg, #e53e3e, #c53030);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(229, 62, 62, 0.4);
+    text-transform: uppercase;
+  }
+
+  .rejected-title {
+    color: #4a5568 !important;
+    opacity: 0.9 !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    margin-top: 12px !important;
+    padding: 0 4px !important;
+    line-height: 1.3 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+
+  .rejected-details {
+    color: #4a5568 !important;
+    opacity: 0.8 !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    margin-top: 3px !important;
+    padding: 0 4px !important;
+    line-height: 1.2 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+
+  .rejected-actions {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(229, 62, 62, 0.2);
+    border-radius: 0 0 16px 16px;
+    box-sizing: border-box;
+    z-index: 2;
+    display: flex;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 0 16px;
+  }
+
+  .rejected-status-icon {
+    color: #e53e3e;
+    font-size: 20px;
+    opacity: 0.9;
+  }
+
+  /* List View Styles */
   #driveItemsContainer.list-view {
     flex-direction: column; 
-    padding: 0px 20px; 
+    padding: 0; 
+    gap: 8px; 
   }
 
   #driveItemsContainer.list-view .drive-item {
@@ -220,53 +344,260 @@ $page = 'recent';
     flex-direction: row; 
     align-items: center; 
     justify-content: flex-start; 
-    padding: 10px 15px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
-    margin-bottom: 10px; 
+    padding: 16px 20px; 
+    box-shadow: 0 4px 16px rgba(0,0,0,0.05); 
+    margin-bottom: 0; 
+    padding-bottom: 16px; 
+    display: grid;
+    grid-template-columns: auto 50px 1fr 1fr 1fr auto auto auto;
+    gap: 16px;
+    align-items: center;
   }
 
   #driveItemsContainer.list-view .drive-item .icon-wrapper {
-    flex-grow: 0;
-    margin-right: 15px;
+    grid-column: 1;
+    margin: 0;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   #driveItemsContainer.list-view .drive-item i.fimg {
-    font-size: 40px; 
+    font-size: 32px; 
+  }
+
+  #driveItemsContainer.list-view .drive-item .top-star-icon {
+    grid-column: 2;
+    position: static;
+    margin: 0;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   #driveItemsContainer.list-view .drive-item .drive-title {
-    margin-top: 0;
+    grid-column: 3;
+    margin: 0; 
     font-size: 16px;
-    flex-basis: 30%; 
+    font-weight: 600;
+    text-align: left;
+    padding: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
   }
 
-  #driveItemsContainer.list-view .drive-item .drive-details {
-    margin-top: 0;
-    font-size: 13px;
-    flex-basis: 20%; 
+  #driveItemsContainer.list-view .drive-item .drive-details:nth-of-type(1) {
+    grid-column: 4;
+    margin: 0; 
+    font-size: 14px;
+    color: #4a5568;
+    font-weight: 500;
+    text-align: left;
+    padding: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+
+  #driveItemsContainer.list-view .drive-item .drive-details:nth-of-type(2) {
+    grid-column: 5;
+    margin: 0; 
+    font-size: 14px;
+    color: #4a5568;
+    font-weight: 500;
+    text-align: left;
+    padding: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
   }
 
   #driveItemsContainer.list-view .drive-item .status-icon {
-    position: static; 
-    margin-left: 10px;
-    margin-right: auto; 
-  }
-
-
-  #driveItemsContainer.list-view .drive-item .top-star-icon {
-    position: static; 
-    order: -1; 
-    margin-right: 10px; 
-    margin-left: 0; 
+    grid-column: 6;
+    position: static;
+    margin: 0;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
   }
 
   #driveItemsContainer.list-view .drive-item .actions-container {
+    grid-column: 7 / 9;
     position: static; 
-    margin-top: 0;
-    padding-top: 0;
-    border-top: none;
-    margin-left: auto; 
+    margin: 0;
+    padding: 0; 
+    border: none; 
     height: auto; 
+    background: transparent;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px; 
+    width: auto;
+  }
+
+  #driveItemsContainer.list-view .actions-container .delete-btn,
+  #driveItemsContainer.list-view .actions-container .rename-btn {
+    width: 36px; 
+    height: 36px; 
+    font-size: 16px;
+    margin: 0;
+  }
+
+  /* List View Rejected Items */
+  #driveItemsContainer.list-view .rejected-item {
+    height: auto !important;
+    opacity: 0.9;
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(229, 62, 62, 0.3) !important;
+    padding: 16px 20px !important;
+    justify-content: flex-start !important;
+    box-shadow: 0 4px 16px rgba(229, 62, 62, 0.1) !important;
+  }
+
+  #driveItemsContainer.list-view .rejected-item:hover {
+    transform: translateY(-2px) !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    box-shadow: 0 6px 20px rgba(229, 62, 62, 0.15) !important;
+    cursor: not-allowed;
+  }
+
+  #driveItemsContainer.list-view .rejected-item .icon-wrapper {
+    margin-bottom: 0;
+    padding-top: 0;
+  }
+
+  #driveItemsContainer.list-view .rejected-overlay {
+    grid-column: 6;
+    position: static;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #driveItemsContainer.list-view .rejected-badge {
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+
+  #driveItemsContainer.list-view .rejected-actions {
+    grid-column: 7 / 9;
+    position: static;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    background: transparent !important;
+  }
+
+  #driveItemsContainer.list-view .rejected-title {
+    margin: 0 !important;
+    text-align: left;
+  }
+
+  #driveItemsContainer.list-view .rejected-details {
+    margin: 0 !important;
+    text-align: left;
+  }
+
+  /* Modern Form Styling */
+  .form-control {
+    border: 2px solid rgba(74, 85, 104, 0.1);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+  }
+
+  .form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    background: white;
+  }
+
+  .btn {
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    border: none;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+  }
+
+  .btn-secondary {
+    background: rgba(74, 85, 104, 0.1);
+    color: #4a5568;
+    border: 2px solid rgba(74, 85, 104, 0.1);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(74, 85, 104, 0.2);
+    transform: translateY(-1px);
+  }
+
+  .btn-outline-secondary {
+    border: 2px solid rgba(74, 85, 104, 0.2);
+    color: #4a5568;
+    background: transparent;
+  }
+
+  .btn-outline-secondary:hover {
+    background: rgba(74, 85, 104, 0.1);
+    transform: translateY(-1px);
+  }
+
+  .btn-outline-secondary.active {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border-color: #667eea;
+  }
+
+  /* Input Group Styling */
+  .input-group-append .btn {
+    border-radius: 0 12px 12px 0;
+    border: 2px solid rgba(74, 85, 104, 0.1);
+    border-left: none;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .drive-item {
+      width: 180px;
+      height: 200px;
+    }
+    
+    .az-content {
+      padding: 20px;
+    }
+    
+    #driveItemsContainer.list-view .drive-item {
+      padding: 12px 16px;
+    }
   }
 </style>
 
@@ -278,7 +609,7 @@ $page = 'recent';
                 </div>
 
                 <div class="mb-4 clearfix">
-                    <h3 class="float-left">Most Recent files</h3>
+                    <h3 class="float-left" style="color: #2d3748; font-weight: 600;">Most Recent Files</h3>
                 </div>
 
                 <div class="row mb-3 align-items-center">
@@ -293,7 +624,7 @@ $page = 'recent';
                         </div>
                     </div>
                     <div class="col-md-6 text-right">
-                        <button class="btn btn-outline-secondary" id="gridViewBtn" title="Grid View">
+                        <button class="btn btn-outline-secondary active" id="gridViewBtn" title="Grid View">
                             <i class="fas fa-th-large"></i>
                         </button>
                         <button class="btn btn-outline-secondary ml-2" id="listViewBtn" title="List View">
@@ -381,14 +712,22 @@ $page = 'recent';
                         </div>
                     </div>
                     @else
-                    <div class="drive-item file-item" style="background-color: lightgray;">
+                    <div class="drive-item file-item rejected-item">
                         <div class="icon-wrapper">
-                            <i class="fa fa-file fimg" data-id="{{ $doc->document_id }}"></i>
+                            <i class="fa fa-file fimg rejected-icon"></i>
                         </div>
-                        <div class="drive-title">{{ $doc->document_title }}</div>
-                        <div class="drive-details">{{ $doc->creator->name }} | {{ $doc->creator->department->dept_name }}</div>
-                        <div class="drive-details">{{ $doc->updated_at->format('d M Y h:i A') }}</div>
-                        <span style="color:red; font-weight:bolder;">REJECTED</span>
+                        
+                        <div class="rejected-overlay">
+                            <span class="rejected-badge">REJECTED</span>
+                        </div>
+                        
+                        <div class="drive-title rejected-title">{{ $doc->document_title }}</div>
+                        <div class="drive-details rejected-details">{{ $doc->creator->name }} | {{ $doc->creator->department->dept_name }}</div>
+                        <div class="drive-details rejected-details">{{ $doc->updated_at->format('d M Y h:i A') }}</div>
+                        
+                        <div class="actions-container rejected-actions">
+                            <i class="fas fa-times-circle rejected-status-icon"></i>
+                        </div>
                     </div>
                     @endif
                     @endforeach
@@ -460,7 +799,6 @@ $page = 'recent';
 
         if (profileDropdownToggle && profileDropdownMenu) {
             profileDropdownToggle.addEventListener('click', function(e) {
-                e.preventDefault();
                 profileDropdownMenu.classList.toggle('show');
             });
 
@@ -504,8 +842,8 @@ $page = 'recent';
         const currentPage = '{{ $page ?? "" }}';
         $('.az-sidebar-nav .nav-link').removeClass('active');
 
-        if (currentPage === 'dashboard') {
-            $('.az-sidebar-nav .nav-link[href="/"]').addClass('active');
+        if (currentPage === 'recent') {
+            $('.az-sidebar-nav .nav-link[href="/recent-files"]').addClass('active');
         } else if (currentPage) {
             $(`.az-sidebar-nav .nav-link[href$="/${currentPage}"]`).addClass('active');
         }
@@ -520,13 +858,13 @@ $page = 'recent';
 
         function setView(view) {
             if (view === 'list') {
-            driveItemsContainer.addClass('list-view');
-            listViewBtn.addClass('active');
-            gridViewBtn.removeClass('active');
+                driveItemsContainer.addClass('list-view');
+                listViewBtn.addClass('active');
+                gridViewBtn.removeClass('active');
             } else {
-            driveItemsContainer.removeClass('list-view');
-            gridViewBtn.addClass('active');
-            listViewBtn.removeClass('active');
+                driveItemsContainer.removeClass('list-view');
+                gridViewBtn.addClass('active');
+                listViewBtn.removeClass('active');
             }
             localStorage.setItem('driveView', view);
         }
@@ -536,16 +874,15 @@ $page = 'recent';
         gridViewBtn.click(() => setView('grid'));
         listViewBtn.click(() => setView('list'));
 
-
         searchInput.on('keyup', function() {
             const searchTerm = $(this).val().toLowerCase();
             $('.drive-item').each(function() {
-            const title = $(this).find('.drive-title').text().toLowerCase();
-            if (title.includes(searchTerm)) {
-                $(this).show();
-            } else {
-                $(this).hide();
-            }
+                const title = $(this).find('.drive-title').text().toLowerCase();
+                if (title.includes(searchTerm)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
             });
             if (searchTerm.length > 0) {
                 clearSearchBtn.show();
@@ -558,26 +895,24 @@ $page = 'recent';
             searchInput.val('').trigger('keyup');
         });
 
-
         $('#createFolderBtn').click(() => $('#createFolderModal').modal('show'));
-
 
         $('#submitFolder').click(function() {
             const folder_name = $('#folderName').val();
             if (!folder_name) {
-            Swal.fire('Error', 'Folder name is required', 'error');
-            return;
+                Swal.fire('Error', 'Folder name is required', 'error');
+                return;
             }
             Swal.fire({
-            title: 'Creating Folder...',
-            didOpen: () => Swal.showLoading()
+                title: 'Creating Folder...',
+                didOpen: () => Swal.showLoading()
             });
 
             $.post('/files/folder/create', {
-            folder_name,
-            _token: '{{ csrf_token() }}'
+                folder_name,
+                _token: '{{ csrf_token() }}'
             }, function(resp) {
-            Swal.fire('Success!', resp.message, 'success').then(() => location.reload());
+                Swal.fire('Success!', resp.message, 'success').then(() => location.reload());
             }).fail(() => Swal.fire('Error', 'Could not create folder.', 'error'));
         });
 
@@ -591,29 +926,27 @@ $page = 'recent';
         });
 
         $('.file-item-btn-request').click(function() {
-
             const id = $(this).data('id');
             Swal.fire({
-            title: 'Request for file sharing?',
-            icon: 'info',
-            showCancelButton: true,
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'Cancel'
+                title: 'Request for file sharing?',
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'Cancel'
             }).then(result => {
-            if (result.isConfirmed) {
-                $.ajax({
-                url: '/files/request-view/',
-                method: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    document_id: id
-                },
-                success: res => Swal.fire('Success!', res.message, 'success').then(() => location.reload()),
-                error: () => Swal.fire('Error', 'Request failed', 'error')
-                });
-            }
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/files/request-view/',
+                        method: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            document_id: id
+                        },
+                        success: res => Swal.fire('Success!', res.message, 'success').then(() => location.reload()),
+                        error: () => Swal.fire('Error', 'Request failed', 'error')
+                    });
+                }
             });
-
         });
 
         $('.folder-item-btn').click(function() {
@@ -621,8 +954,7 @@ $page = 'recent';
             window.location.href = '/drive/folder/' + folderId;
         });
 
-            $('.delete-file').click(function(e) {
-
+        $('.delete-file').click(function(e) {
             e.preventDefault();
             e.stopPropagation();
             const id = $(this).data('id');
@@ -634,22 +966,20 @@ $page = 'recent';
                 cancelButtonText: 'Cancel'
             }).then(result => {
                 if (result.isConfirmed) {
-                $.ajax({
-                    url: '/files/delete/' + id,
-                    method: 'DELETE',
-                    data: {
-                    _token: '{{ csrf_token() }}'
-                    },
-                    success: res => Swal.fire('Deleted!', res.message, 'success').then(() => location.reload()),
-                    error: () => Swal.fire('Error', 'Deletion failed', 'error')
-                });
+                    $.ajax({
+                        url: '/files/delete/' + id,
+                        method: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: res => Swal.fire('Deleted!', res.message, 'success').then(() => location.reload()),
+                        error: () => Swal.fire('Error', 'Deletion failed', 'error')
+                    });
                 }
             });
         });
 
-
         $('.delete-folder').click(function(e) {
-
             e.preventDefault();
             e.stopPropagation();
             const id = $(this).data('id');
@@ -661,19 +991,18 @@ $page = 'recent';
                 cancelButtonText: 'Cancel'
             }).then(result => {
                 if (result.isConfirmed) {
-                $.ajax({
-                    url: '/files/folder/delete/' + id,
-                    method: 'DELETE',
-                    data: {
-                    _token: '{{ csrf_token() }}'
-                    },
-                    success: res => Swal.fire('Deleted!', res.message, 'success').then(() => location.reload()),
-                    error: () => Swal.fire('Error', 'Deletion failed', 'error')
-                });
+                    $.ajax({
+                        url: '/files/folder/delete/' + id,
+                        method: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: res => Swal.fire('Deleted!', res.message, 'success').then(() => location.reload()),
+                        error: () => Swal.fire('Error', 'Deletion failed', 'error')
+                    });
                 }
             });
         });
-
 
         $('.rename-folder').click(function(e) {
             e.stopPropagation();
@@ -686,26 +1015,25 @@ $page = 'recent';
                 showCancelButton: true,
                 confirmButtonText: 'Rename',
                 preConfirm: (folderName) => {
-                if (!folderName) {
-                    Swal.showValidationMessage('Folder name cannot be empty');
-                    return;
-                }
-                return $.ajax({
-                    url: '/files/folder/rename/' + folderId,
-                    method: 'PUT',
-                    data: {
-                    folder_name: folderName,
-                    _token: '{{ csrf_token() }}'
+                    if (!folderName) {
+                        Swal.showValidationMessage('Folder name cannot be empty');
+                        return;
                     }
-                }).then(resp => {
-                    Swal.fire('Renamed!', resp.message, 'success').then(() => location.reload());
-                }).catch(() => {
-                    Swal.fire('Error', 'Rename failed', 'error');
-                });
+                    return $.ajax({
+                        url: '/files/folder/rename/' + folderId,
+                        method: 'PUT',
+                        data: {
+                            folder_name: folderName,
+                            _token: '{{ csrf_token() }}'
+                        }
+                    }).then(resp => {
+                        Swal.fire('Renamed!', resp.message, 'success').then(() => location.reload());
+                    }).catch(() => {
+                        Swal.fire('Error', 'Rename failed', 'error');
+                    });
                 }
             });
         });
-
 
         let editMode = false;
         let currentFileId = null;
@@ -724,30 +1052,29 @@ $page = 'recent';
             currentFileId = $(this).data('id');
 
             $.get('/files/get/' + currentFileId, function(data) {
-            $('#uploadModal .modal-title').text('Edit File');
-            $('input[name="document_title"]').val(data.document_title);
-            $('#uploadModal').modal('show');
+                $('#uploadModal .modal-title').text('Edit File');
+                $('input[name="document_title"]').val(data.document_title);
+                $('#uploadModal').modal('show');
             }).fail(() => Swal.fire('Error', 'Unable to fetch file data', 'error'));
         });
 
-$('#submitUpload').click(function() {
-  const formData = new FormData($('#uploadForm')[0]);
-
+        $('#submitUpload').click(function() {
+            const formData = new FormData($('#uploadForm')[0]);
             let url = editMode ? '/files/edit/' + currentFileId : '/files/upload';
 
             Swal.fire({
-            title: editMode ? 'Updating...' : 'Uploading...',
-            didOpen: () => Swal.showLoading()
+                title: editMode ? 'Updating...' : 'Uploading...',
+                didOpen: () => Swal.showLoading()
             });
 
             $.ajax({
-            url: url,
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: resp => Swal.fire('Success!', resp.message, 'success').then(() => location.reload()),
-            error: () => Swal.fire('Error', editMode ? 'Update failed' : 'Upload failed', 'error')
+                url: url,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: resp => Swal.fire('Success!', resp.message, 'success').then(() => location.reload()),
+                error: () => Swal.fire('Error', editMode ? 'Update failed' : 'Upload failed', 'error')
             });
         });
 

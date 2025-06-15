@@ -67,7 +67,7 @@
             </div>
             <h6>{{ auth()->user()->name }}</h6>
             <span>{{ auth()->user()->role }}</span>
-            <span style="font-weight: bold; font-size:10px;">{{ auth()->user()->department->dept_name }}</span>
+            {{-- <span style="font-weight: bold; font-size:10px;">{{ auth()->user()->department->dept_name }}</span> --}}
           </div>
           <a href="/logout" class="dropdown-item"><i class="typcn typcn-power-outline"></i> Sign Out</a>
         </div>
