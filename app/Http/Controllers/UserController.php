@@ -20,7 +20,7 @@ class UserController extends Controller
 
     public function showAccountManagementForm()
     {
-        $user = Auth::user();
+        $user = User::with('department')->find(Auth::user()->id);
         $departments = Department::orderBy('dept_name')->get(); // Fetch all departments for dropdown
         $page = 'my-account';
 

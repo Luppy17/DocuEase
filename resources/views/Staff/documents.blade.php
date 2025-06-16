@@ -1050,63 +1050,193 @@ $page = 'dashboard';
         }
 
         $('#createFolderBtn').click(() => {
-            clearModals(); // Clear any existing modals
-            $('#folderName').val(''); // Clear input
-            setTimeout(() => {
-                $('#createFolderModal').modal({
-                    backdrop: true,
-                    keyboard: true,
-                    focus: true,
-                    show: true
-                });
-            }, 100);
+            Swal.fire({
+                title: 'Create Folder',
+                input: 'text',
+                inputPlaceholder: 'Enter folder name',
+                showCancelButton: true,
+                confirmButtonText: 'Create',
+                preConfirm: (folderName) => {
+                    if (!folderName) {
+                        Swal.showValidationMessage('Folder name cannot be empty');
+                        return;
+                    }
+                    return $.ajax({
+                        url: '/files/folder/create',
+                        method: 'POST',
+                        data: {
+                            folder_name: folderName,
+                            _token: '{{ csrf_token() }}'
+                        }
+                    }).then(resp => {
+                        Swal.fire('Success!', resp.message, 'success').then(() => location.reload());
+                    }).catch(() => {
+                        Swal.fire('Error', 'Could not create folder.', 'error');
+                    });
+                }
+            });
         });
 
-        $('#submitFolder').click(function() {
-            const folder_name = $('#folderName').val().trim();
-            if (!folder_name) {
-                Swal.fire('Error', 'Folder name is required', 'error');
-                return;
-            }
+        $('#uploadFileBtn').click(() => {
+            Swal.fire({
+                title: 'Upload File',
+                html: `
+                    <form id="uploadForm">
+                        <input type="text" class="swal2-input" name="document_title" placeholder="Document Title" required>
+                        <input type="file" class="swal2-file" name="document_file" required>
+                    </form>
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'Upload',
+                showLoaderOnConfirm: true,
+                preConfirm: () => {
+                    const formData = new FormData(document.getElementById('uploadForm'));
+                    return $.ajax({
+                        url: '/files/upload',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false
+                    }).then(resp => {
+                        Swal.fire('Success!', resp.message, 'success').then(() => location.reload());
+                    }).catch((xhr) => {
+                        let errorMessage = 'An error occurred.';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+                        Swal.fire('Error', errorMessage, 'error');
+                    });
+                }
+            });
+        });
+
+        $('.rename-file').click(function(e) {
+            e.stopPropagation();
+            const fileId = $(this).data('id');
+
+            $.get('/files/get/' + fileId, function(data) {
+                Swal.fire({
+                    title: 'Rename File',
+                    input: 'text',
+                    inputValue: data.document_title,
+                    inputPlaceholder: 'Enter new file name',
+                    showCancelButton: true,
+                    confirmButtonText: 'Rename',
+                    preConfirm: (newTitle) => {
+                        if (!newTitle) {
+                            Swal.showValidationMessage('File name cannot be empty');
+                            return;
+                        }
+                        return $.ajax({
+                            url: '/files/edit/' + fileId,
+                            method: 'POST',
+                            data: {
+                                document_title: newTitle,
+                                _token: '{{ csrf_token() }}'
+                            }
+                        }).then(resp => {
+                            Swal.fire('Success!', resp.message, 'success').then(() => location.reload());
+                        }).catch((xhr) => {
+                            let errorMessage = 'An error occurred.';
+                            if (xhr.responseJSON && xhr.responseJSON.message) {
+                                errorMessage = xhr.responseJSON.message;
+                            }
+                            Swal.fire('Error', errorMessage, 'error');
+                        });
+                    }
+                });
+            }).fail(() => Swal.fire('Error', 'Unable to fetch file data', 'error'));
+        });
+
+        $('#submitUpload').click(function() {
+            const formData = new FormData($('#uploadForm')[0]);
+            let url = editMode ? '/files/edit/' + currentFileId : '/files/upload';
 
             // Close modal first
-            $('#createFolderModal').modal('hide');
+            $('#uploadModal').modal('hide');
             clearModals();
 
             Swal.fire({
-                title: 'Creating Folder...',
+                title: editMode ? 'Updating...' : 'Uploading...',
                 didOpen: () => Swal.showLoading()
             });
 
-            $.post('/files/folder/create', {
-                folder_name,
-                _token: '{{ csrf_token() }}'
-            }, function(resp) {
-                Swal.fire('Success!', resp.message, 'success').then(() => location.reload());
-            }).fail(() => Swal.fire('Error', 'Could not create folder.', 'error'));
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: resp => Swal.fire('Success!', resp.message, 'success').then(() => location.reload()),
+                error: (xhr) => {
+                    let errorMessage = 'An error occurred.';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    }
+                    Swal.fire('Error', errorMessage, 'error');
+                }
+            });
         });
 
-        // Handle modal close events
-        $('#createFolderModal').on('hidden.bs.modal', function () {
-            clearModals();
+        $('#sidebarNewButton').click(function() {
+            Swal.fire({
+                title: 'Create New',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Upload File',
+                cancelButtonText: 'Create Folder',
+                showLoaderOnConfirm: false,
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#uploadFileBtn').click();
+                } else if (result.isDismissed && result.dismiss === Swal.DismissReason.cancel) {
+                    $('#createFolderBtn').click();
+                }
+            });
         });
 
-        $('#uploadModal').on('hidden.bs.modal', function () {
-            clearModals();
+        $('.star-btn').click(function(e) {
+            e.stopPropagation();
+            const documentId = $(this).data('id');
+            const button = $(this);
+            const isCurrentlyStarred = button.hasClass('starred');
+            const url = isCurrentlyStarred ? '/files/unstar/' + documentId : '/files/star/' + documentId;
+            const method = isCurrentlyStarred ? 'DELETE' : 'POST';
+
+            $.ajax({
+                url: url,
+                method: method,
+                data: { _token: '{{ csrf_token() }}' },
+                success: function(response) {
+                    if (response.status === 'success') {
+                        button.toggleClass('starred');
+                        Swal.fire('Success!', response.message, 'success');
+                        // If on the starred files page and unstarred, remove the item
+                        if (currentPage === 'starred-files' && !button.hasClass('starred')) {
+                            button.closest('.drive-item').fadeOut(300, function() {
+                                $(this).remove();
+                                if ($('.drive-item').length === 0) {
+                                    $('#driveItemsContainer').append('<div class="col-12 text-center py-5"><h4>No starred files found.</h4><p>Star files from your drive to see them here.</p></div>');
+                                }
+                            });
+                        }
+                    } else {
+                        Swal.fire('Error', response.message, 'error');
+                    }
+                },
+                error: function(xhr) {
+                    let errorMessage = 'An error occurred.';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    }
+                    Swal.fire('Error', errorMessage, 'error');
+                }
+            });
         });
 
-        // Handle escape key and outside clicks
-        $(document).on('keydown', function(e) {
-            if (e.key === 'Escape') {
-                $('.modal').modal('hide');
-                clearModals();
-            }
-        });
-
-        // Handle backdrop clicks
-        $(document).on('click', '.modal-backdrop', function() {
-            $('.modal').modal('hide');
-            clearModals();
+        $('#backButton').click(function() {
+            window.history.back();
         });
 
         $('.file-item-btn').click(function() {
@@ -1201,161 +1331,34 @@ $page = 'dashboard';
             e.stopPropagation();
             const folderId = $(this).data('id');
 
-            Swal.fire({
-                title: 'Rename Folder',
-                input: 'text',
-                inputPlaceholder: 'Enter new folder name',
-                showCancelButton: true,
-                confirmButtonText: 'Rename',
-                preConfirm: (folderName) => {
-                    if (!folderName) {
-                        Swal.showValidationMessage('Folder name cannot be empty');
-                        return;
-                    }
-                    return $.ajax({
-                        url: '/files/folder/rename/' + folderId,
-                        method: 'PUT',
-                        data: {
-                            folder_name: folderName,
-                            _token: '{{ csrf_token() }}'
+            $.get('/files/folder/get/' + folderId, function(data) {
+                Swal.fire({
+                    title: 'Rename Folder',
+                    input: 'text',
+                    inputValue: data.folder_name,
+                    inputPlaceholder: 'Enter new folder name',
+                    showCancelButton: true,
+                    confirmButtonText: 'Rename',
+                    preConfirm: (folderName) => {
+                        if (!folderName) {
+                            Swal.showValidationMessage('Folder name cannot be empty');
+                            return;
                         }
-                    }).then(resp => {
-                        Swal.fire('Renamed!', resp.message, 'success').then(() => location.reload());
-                    }).catch(() => {
-                        Swal.fire('Error', 'Rename failed', 'error');
-                    });
-                }
-            });
-        });
-
-        let editMode = false;
-        let currentFileId = null;
-
-        $('#uploadFileBtn').click(() => {
-            clearModals();
-            editMode = false;
-            currentFileId = null;
-            $('#uploadModal .modal-title').text('Upload File');
-            $('#uploadForm')[0].reset();
-            setTimeout(() => {
-                $('#uploadModal').modal({
-                    backdrop: true,
-                    keyboard: true,
-                    focus: true,
-                    show: true
+                        return $.ajax({
+                            url: '/files/folder/rename/' + folderId,
+                            method: 'PUT',
+                            data: {
+                                folder_name: folderName,
+                                _token: '{{ csrf_token() }}'
+                            }
+                        }).then(resp => {
+                            Swal.fire('Success!', resp.message, 'success').then(() => location.reload());
+                        }).catch(() => {
+                            Swal.fire('Error', 'Rename failed', 'error');
+                        });
+                    }
                 });
-            }, 100);
-        });
-
-        $('.rename-file').click(function(e) {
-            e.stopPropagation();
-            clearModals();
-            editMode = true;
-            currentFileId = $(this).data('id');
-
-            $.get('/files/get/' + currentFileId, function(data) {
-                $('#uploadModal .modal-title').text('Edit File');
-                $('input[name="document_title"]').val(data.document_title);
-                setTimeout(() => {
-                    $('#uploadModal').modal({
-                        backdrop: true,
-                        keyboard: true,
-                        focus: true,
-                        show: true
-                    });
-                }, 100);
-            }).fail(() => Swal.fire('Error', 'Unable to fetch file data', 'error'));
-        });
-
-        $('#submitUpload').click(function() {
-            const formData = new FormData($('#uploadForm')[0]);
-            let url = editMode ? '/files/edit/' + currentFileId : '/files/upload';
-
-            // Close modal first
-            $('#uploadModal').modal('hide');
-            clearModals();
-
-            Swal.fire({
-                title: editMode ? 'Updating...' : 'Uploading...',
-                didOpen: () => Swal.showLoading()
-            });
-
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: resp => Swal.fire('Success!', resp.message, 'success').then(() => location.reload()),
-                error: (xhr) => {
-                    let errorMessage = 'An error occurred.';
-                    if (xhr.responseJSON && xhr.responseJSON.message) {
-                        errorMessage = xhr.responseJSON.message;
-                    }
-                    Swal.fire('Error', errorMessage, 'error');
-                }
-            });
-        });
-
-        $('#sidebarNewButton').click(function() {
-            Swal.fire({
-                title: 'Create New',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'Upload File',
-                cancelButtonText: 'Create Folder',
-                showLoaderOnConfirm: false,
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#uploadFileBtn').click();
-                } else if (result.isDismissed && result.dismiss === Swal.DismissReason.cancel) {
-                    $('#createFolderBtn').click();
-                }
-            });
-        });
-
-        $('.star-btn').click(function(e) {
-            e.stopPropagation();
-            const documentId = $(this).data('id');
-            const button = $(this);
-            const isCurrentlyStarred = button.hasClass('starred');
-            const url = isCurrentlyStarred ? '/files/unstar/' + documentId : '/files/star/' + documentId;
-            const method = isCurrentlyStarred ? 'DELETE' : 'POST';
-
-            $.ajax({
-                url: url,
-                method: method,
-                data: { _token: '{{ csrf_token() }}' },
-                success: function(response) {
-                    if (response.status === 'success') {
-                        button.toggleClass('starred');
-                        Swal.fire('Success!', response.message, 'success');
-                        // If on the starred files page and unstarred, remove the item
-                        if (currentPage === 'starred-files' && !button.hasClass('starred')) {
-                            button.closest('.drive-item').fadeOut(300, function() {
-                                $(this).remove();
-                                if ($('.drive-item').length === 0) {
-                                    $('#driveItemsContainer').append('<div class="col-12 text-center py-5"><h4>No starred files found.</h4><p>Star files from your drive to see them here.</p></div>');
-                                }
-                            });
-                        }
-                    } else {
-                        Swal.fire('Error', response.message, 'error');
-                    }
-                },
-                error: function(xhr) {
-                    let errorMessage = 'An error occurred.';
-                    if (xhr.responseJSON && xhr.responseJSON.message) {
-                        errorMessage = xhr.responseJSON.message;
-                    }
-                    Swal.fire('Error', errorMessage, 'error');
-                }
-            });
-        });
-
-        $('#backButton').click(function() {
-            window.history.back();
+            }).fail(() => Swal.fire('Error', 'Unable to fetch folder data', 'error'));
         });
     });
 </script>

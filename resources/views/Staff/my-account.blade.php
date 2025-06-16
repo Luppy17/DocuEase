@@ -363,15 +363,15 @@ $page = 'my-account';
                                     </div>
                                     <div class="form-group">
                                         <label for="department">Department</label>
-                                        @if($user->role === 'Staff' || $user->role === 'Manager') {{-- Example: Only Staff/Manager can update department --}}
-                                        <select class="form-control" id="dept_id" name="dept_id">
-                                            <option value="">Select Department</option>
-                                            @foreach($departments as $dept)
-                                                <option value="{{ $dept->dept_id }}" {{ ($user->dept_id == $dept->dept_id) ? 'selected' : '' }}>
-                                                    {{ $dept->dept_name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        @if(($user->role === 'Staff' || $user->role === 'Manager') && $user->dept_id == null) {{-- Example: Only Staff/Manager can update department --}}
+                                            <select class="form-control" id="dept_id" name="dept_id">
+                                                <option value="">Select Department</option>
+                                                @foreach($departments as $dept)
+                                                    <option value="{{ $dept->dept_id }}" {{ ($user->dept_id == $dept->dept_id) ? 'selected' : '' }}>
+                                                        {{ $dept->dept_name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
                                         @else
                                         <input type="text" class="form-control" id="department" value="{{ $user->department->dept_name ?? 'N/A' }}" readonly>
                                         <input type="hidden" name="dept_id" value="{{ $user->dept_id ?? '' }}">
