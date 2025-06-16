@@ -57,7 +57,15 @@ class FileAdminController extends Controller
         return view('FileAdmin.docviewapprove',compact('pendingApprovalViewDocument'));
     }
 
-    
+    public function viewDepartmentDocuments()
+    {
+        $documents = Document::where('dept_id', auth()->user()->dept_id)
+            ->with(['creator', 'folder', 'department'])
+            ->latest()
+            ->get();
+
+        return view('FileAdmin.department-documents', compact('documents'));
+    }
 
     /**
      * Store a newly created resource in storage.

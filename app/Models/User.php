@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-'id', 'name', 'email', 'role', 'email_verified_at', 'password', 'dept_id', 'remember_token', 'created_at', 'updated_at' 
+'id', 'name', 'email', 'role', 'email_verified_at', 'password', 'dept_id', 'remember_token', 'created_at', 'updated_at', 'profile_photo'
     ];
 
     /**
@@ -40,8 +40,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    
+
     public function department(){
         return $this->belongsTo(Department::class, 'dept_id');
+    }
+
+    public function getProfilePhotoUrlAttribute()
+    {
+        if ($this->profile_photo) {
+            return asset('storage/' . $this->profile_photo);
+        }
+        return asset('10337609.png'); // Default profile photo
     }
 }

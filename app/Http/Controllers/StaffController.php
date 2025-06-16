@@ -87,18 +87,6 @@ class StaffController extends Controller
         return view('Staff.documents-recent', compact('documents', 'folders'));
     }
 
-
-
-    public function logs()
-    {
-        $document_logs = document_logs::
-            where('owner_id', auth()->id())
-            ->latest()
-            ->get();
-
-        return view('Staff.logs', compact('document_logs'));
-    }
-
     /**
      * Show the form for creating a new resource.
      */
