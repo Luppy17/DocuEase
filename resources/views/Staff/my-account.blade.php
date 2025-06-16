@@ -1,68 +1,319 @@
 @php
 $page = 'my-account';
 @endphp
-@include('include.appstaff')
+@if(auth()->user()->role == 'Staff')
+    @include('include.appstaff')
+@elseif(auth()->user()->role == 'Manager')
+    @include('include.appmanager')
+@elseif(auth()->user()->role == 'File Admin')
+    @include('include.appfadmin')
+@endif
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
+    :root {
+        --primary-color: #4361ee;
+        --primary-hover: #3a56d4;
+        --primary-light: #eef2ff;
+        --danger-color: #ef476f;
+        --danger-hover: #d63d62;
+        --danger-light: #fff5f5;
+        --success-color: #10b981;
+        --success-light: #ecfdf5;
+        --text-primary: #1e293b;
+        --text-secondary: #475569;
+        --text-muted: #94a3b8;
+        --bg-light: #f8fafc;
+        --bg-white: #ffffff;
+        --border-radius: 16px;
+        --border-radius-sm: 8px;
+        --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
     body {
-        background-color: #f8f9fa;
+        background-color: var(--bg-light);
+        color: var(--text-primary);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        line-height: 1.6;
     }
+
     .az-content-body {
-        padding-top: 20px;
+        padding: 2.5rem 0;
     }
+
+    .az-dashboard-one-title {
+        margin-bottom: 2.5rem;
+        position: relative;
+    }
+
+    .az-content-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.75rem;
+        letter-spacing: -0.025em;
+    }
+
+    .az-content-text {
+        font-size: 1.25rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+        margin-bottom: 2rem;
+    }
+
     .card {
         border: none;
-        border-radius: 12px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-        margin-bottom: 30px; 
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        margin-bottom: 2rem;
+        transition: var(--transition);
+        background: var(--bg-white);
+        overflow: hidden;
     }
+
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--box-shadow-lg);
+    }
+
     .card-header {
-        background-color: #4e73df;
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
         color: white;
-        border-top-left-radius: 12px;
-        border-top-right-radius: 12px;
+        border-top-left-radius: var(--border-radius);
+        border-top-right-radius: var(--border-radius);
         font-weight: 600;
-        padding: 15px 20px;
-        font-size: 1.15rem; 
+        padding: 1.5rem;
+        font-size: 1.1rem;
+        border: none;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
     }
+
+    .card-header i {
+        font-size: 1.25rem;
+        opacity: 0.9;
+    }
+
     .card-header.bg-danger {
-        background-color: #e74a3b !important; 
+        background: linear-gradient(135deg, var(--danger-color), var(--danger-hover));
     }
+
+    .card-body {
+        padding: 2rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.75rem;
+    }
+
     .form-group label {
         font-weight: 500;
-        color: #5a5c69;
-        margin-bottom: 0.5rem;
+        color: var(--text-secondary);
+        margin-bottom: 0.75rem;
+        font-size: 0.95rem;
+        display: block;
     }
+
+    .form-control {
+        border: 2px solid #e2e8f0;
+        border-radius: var(--border-radius-sm);
+        padding: 0.875rem 1.25rem;
+        font-size: 0.95rem;
+        transition: var(--transition);
+        background-color: var(--bg-white);
+    }
+
     .form-control:focus {
-        border-color: #4e73df;
-        box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 4px var(--primary-light);
+        outline: none;
     }
+
+    .form-control:read-only {
+        background-color: var(--bg-light);
+        cursor: not-allowed;
+    }
+
+    .btn {
+        padding: 0.875rem 1.75rem;
+        font-weight: 600;
+        border-radius: var(--border-radius-sm);
+        transition: var(--transition);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        letter-spacing: 0.025em;
+    }
+
+    .btn i {
+        font-size: 1.1rem;
+    }
+
     .btn-primary {
-        background-color: #4e73df;
-        border-color: #4e73df;
-        transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+        border: none;
+        color: white;
     }
+
     .btn-primary:hover {
-        background-color: #2e59d9;
-        border-color: #264aab;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(67, 97, 238, 0.25);
     }
+
     .btn-danger {
-        background-color: #e74a3b;
-        border-color: #e74a3b;
-        transition: background-color 0.2s ease, border-color 0.2s ease;
+        background: linear-gradient(135deg, var(--danger-color), var(--danger-hover));
+        border: none;
+        color: white;
     }
+
     .btn-danger:hover {
-        background-color: #cc0000;
-        border-color: #ac0000;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(239, 71, 111, 0.25);
     }
+
+    .profile-photo-container {
+        position: relative;
+        margin-bottom: 2.5rem;
+        display: flex;
+        justify-content: center;
+    }
+
+    .profile-photo {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid white;
+        box-shadow: var(--box-shadow-lg);
+        transition: var(--transition);
+    }
+
+    .profile-photo:hover {
+        transform: scale(1.02);
+    }
+
+    .photo-upload-btn {
+        position: absolute;
+        bottom: 0;
+        right: calc(50% - 90px);
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+        color: white;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: var(--transition);
+        box-shadow: var(--box-shadow);
+    }
+
+    .photo-upload-btn:hover {
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: var(--box-shadow-lg);
+    }
+
+    .danger-zone {
+        background-color: var(--danger-light);
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        border: 1px solid rgba(239, 71, 111, 0.2);
+    }
+
+    .danger-zone p {
+        color: var(--danger-color);
+        margin-bottom: 1.75rem;
+        font-size: 0.95rem;
+        line-height: 1.7;
+    }
+
+    .alert-danger {
+        background-color: var(--danger-light);
+        border: 1px solid rgba(239, 71, 111, 0.2);
+        color: var(--danger-color);
+        border-radius: var(--border-radius-sm);
+        padding: 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+
     .alert-danger ul {
         margin-bottom: 0;
-        padding-left: 20px;
+        padding-left: 1.5rem;
+    }
+
+    /* Custom Select Styling */
+    select.form-control {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 1rem;
+        padding-right: 2.5rem;
+    }
+
+    /* Success Message Styling */
+    .alert-success {
+        background-color: var(--success-light);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        color: var(--success-color);
+        border-radius: var(--border-radius-sm);
+        padding: 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .az-content-body {
+            padding: 1.5rem 0;
+        }
+
+        .card {
+            margin-bottom: 1.5rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .az-content-title {
+            font-size: 1.75rem;
+        }
+
+        .profile-photo {
+            width: 150px;
+            height: 150px;
+        }
+
+        .photo-upload-btn {
+            width: 40px;
+            height: 40px;
+            right: calc(50% - 75px);
+        }
+    }
+
+    /* Animation for form elements */
+    .form-control, .btn, .card {
+        animation: fadeInUp 0.5s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 </style>
 
@@ -87,6 +338,15 @@ $page = 'my-account';
                                 <i class="fas fa-user-circle mr-2"></i> Profile Information
                             </div>
                             <div class="card-body">
+                                <div class="text-center mb-4">
+                                    <div class="position-relative d-inline-block">
+                                        <img src="{{ $user->profile_photo_url }}" alt="Profile Photo" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                                        <label for="profile_photo" class="position-absolute bottom-0 end-0 bg-primary text-white rounded-circle p-2" style="cursor: pointer;">
+                                            <i class="fas fa-camera"></i>
+                                        </label>
+                                        <input type="file" id="profile_photo" name="profile_photo" class="d-none" accept="image/*">
+                                    </div>
+                                </div>
                                 <form id="profileUpdateForm">
                                     @csrf
                                     <div class="form-group">
@@ -193,36 +453,7 @@ $page = 'my-account';
     $(function(){
         'use strict';
 
-        // Sidebar active state logic (copy-pasted from your existing code)
-        const profileDropdownToggle = document.getElementById('profileDropdownToggle');
-        const profileDropdownMenu = document.getElementById('profileDropdownMenu');
-        const closeDropdownBtn = document.getElementById('closeDropdownBtn');
-
-        if (profileDropdownToggle && profileDropdownMenu) {
-            profileDropdownToggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                profileDropdownMenu.classList.toggle('show');
-            });
-
-            if (closeDropdownBtn) {
-                closeDropdownBtn.addEventListener('click', function() {
-                    profileDropdownMenu.classList.remove('show');
-                });
-            }
-
-            document.addEventListener('click', function(e) {
-                if (!profileDropdownToggle.contains(e.target) && !profileDropdownMenu.contains(e.target)) {
-                    profileDropdownMenu.classList.remove('show');
-                }
-            });
-
-            profileDropdownMenu.querySelectorAll('.action-item, .manage-account-btn, .footer-link').forEach(item => {
-                item.addEventListener('click', function() {
-                    profileDropdownMenu.classList.remove('show');
-                });
-            });
-        }
-
+        // Remove the duplicate dropdown code and keep only the menu-related code
         $('#azMenuShow').on('click', function(e){
             e.preventDefault();
             $('body').addClass('az-menu-show');
@@ -248,7 +479,6 @@ $page = 'my-account';
         } else if (currentPage) {
             $(`.az-sidebar-nav .nav-link[href$="/${currentPage}"]`).addClass('active');
         }
-
 
         // --- Profile Update Logic ---
         $('#profileUpdateForm').submit(function(e) {
@@ -377,6 +607,35 @@ $page = 'my-account';
                     });
                 }
             });
+        });
+
+        // Profile photo upload
+        $('#profile_photo').change(function() {
+            const file = this.files[0];
+            if (file) {
+                const formData = new FormData();
+                formData.append('profile_photo', file);
+                formData.append('_token', '{{ csrf_token() }}');
+
+                $.ajax({
+                    url: '{{ route("profile.photo.update") }}',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            // Update all profile photos on the page
+                            $('.user-main-avatar, .az-img-user img').attr('src', response.photo_url);
+                            Swal.fire('Success!', response.message, 'success');
+                            location.reload();
+                        }
+                    },
+                    error: function(xhr) {
+                        Swal.fire('Error!', xhr.responseJSON.message || 'An error occurred while uploading the photo.', 'error');
+                    }
+                });
+            }
         });
     });
 </script>

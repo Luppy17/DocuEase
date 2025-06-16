@@ -39,9 +39,12 @@ dd($hashedPassword);
 Route::get('/dashboard-fileadmin', [FileAdminController::class, 'index'])->name('dashboard-fileadmin');
 Route::get('/docupdaproval', [FileAdminController::class, 'docupdaproval']);
 Route::get('/docviewapproval', [FileAdminController::class, 'docviewapproval']);
+Route::get('/department-documents', [FileAdminController::class, 'viewDepartmentDocuments'])->name('file-admin.department-documents');
 Route::get('/dashboard-manager', [ManagerController::class, 'index'])->name('dashboard-manager');
 Route::get('/docupdaprovalmanager', [ManagerController::class, 'docupdaproval']);
 Route::get('/docviewapprovalmanager', [ManagerController::class, 'docviewapproval']);
+Route::get('/manager/logs', [ManagerController::class, 'logs'])->name('manager.logs');
+Route::get('/manager/viewfile/{id}', [ManagerController::class, 'viewfile'])->name('manager.viewfile');
 
 //System Admin
 Route::get('/dashboard-admin', [SystemAdminController::class, 'index'])->name('dashboard-admin');
@@ -60,7 +63,6 @@ Route::get('/departmentlist', [SystemAdminController::class, 'department'])->nam
 Route::get('/dashboard-staff', [StaffController::class, 'index'])->name('dashboard-staff');
 Route::get('/uploaded-by-me', [StaffController::class, 'indexme'])->name('uploaded-by-me');
 Route::get('/recent-files', [StaffController::class, 'indexrecent'])->name('recent-files');
-Route::get('/system-logs', [StaffController::class, 'logs'])->name('system-logs');
 Route::get('viewfilestaff/{id}', [StaffController::class, 'viewfilestaff'])->name('files.view');
 
 Route::get('/approved-files', [StaffController::class, 'indexapproved'])->name('approved-files');
@@ -75,6 +77,12 @@ Route::delete('folder/delete/{id}', [FileController::class, 'deleteFolder']);
 Route::get('view/{id}', [FileController::class, 'viewFile']);
 Route::get('viewAdmin/{id}', [FileController::class, 'viewFileAdmin']);
 Route::delete('delete/{id}', [FileController::class, 'deleteFile']);
+
+// New routes for deleted files management
+Route::post('restore/{id}', [FileController::class, 'restoreFile']);
+Route::post('restore-all', [FileController::class, 'restoreAllFiles']);
+Route::delete('permanently-delete/{id}', [FileController::class, 'permanentlyDeleteFile']);
+Route::delete('empty-bin', [FileController::class, 'emptyBin']);
 
 // Approval Routes
 Route::post('approve/{id}', [ApprovalController::class, 'approve']);
@@ -107,6 +115,7 @@ Route::get('/my-account', [UserController::class, 'showAccountManagementForm'])-
 Route::post('/my-account/update-profile', [UserController::class, 'updateProfile'])->name('update-my-profile')->middleware('auth');
 Route::post('/my-account/update-password', [UserController::class, 'updatePassword'])->name('update-my-password')->middleware('auth');
 Route::delete('/my-account/delete', [UserController::class, 'deleteAccount'])->name('delete-my-account')->middleware('auth');
+Route::post('/profile/photo/update', [UserController::class, 'updateProfilePhoto'])->name('profile.photo.update');
 
 
 

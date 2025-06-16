@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException; // For password errors
 use App\Models\User; // Ensure you have this model
 use App\Models\Department; // You'll need this model if not already created
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -85,5 +86,37 @@ class UserController extends Controller
         $user->delete();
 
         return response()->json(['status' => 'success', 'message' => 'Your account has been deleted successfully.']);
+    }
+
+    public function updateProfilePhoto(Request $request)
+    {
+        $request->validate([
+            'profile_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
+
+        $user = Auth::user();
+
+        if ($request->hasFile('profile_photo')) {
+            // Delete old photo if exists
+            if ($user->profile_photo) {
+                Storage::disk('public')->delete($user->profile_photo);
+            }
+
+            // Store new photo
+            $path = $request->file('profile_photo')->store('profile-photos', 'public');
+            $user->profile_photo = $path;
+            $user->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Profile photo updated successfully!',
+                'photo_url' => $user->profile_photo_url
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'No photo uploaded'
+        ], 400);
     }
 }

@@ -77,7 +77,7 @@ class ManagerController extends Controller
         ->groupBy('users.name')
         ->orderBy('total', 'desc')
         ->get();
-    
+
 
         $uploadUserLabels = $uploadsByUser->pluck('name');
         $uploadUserData   = $uploadsByUser->pluck('total');
@@ -116,6 +116,23 @@ class ManagerController extends Controller
         ->latest()->get();
 
         return view('Manager.docviewapprove',compact('pendingApprovalViewDocument'));
+    }
+
+    public function logs()
+    {
+        $document_logs = document_logs::join('users', 'document_logs.created_by', '=', 'users.id')
+            ->where('users.dept_id', auth()->user()->dept_id)
+            ->select('document_logs.*', 'users.name as user_name')
+            ->latest()
+            ->get();
+
+        return view('Manager.logs', compact('document_logs'));
+    }
+
+    public function viewfile($id)
+    {
+        $path = DB::table('document_logs')->where('logs_id', $id)->first()->filepath;
+        return response()->file(storage_path('app/' . $path));
     }
 
     /**

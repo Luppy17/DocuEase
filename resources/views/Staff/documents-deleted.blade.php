@@ -54,7 +54,7 @@ $page = 'deleted-files';
     border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 20px 16px;
     box-sizing: border-box;
-    padding-bottom: 60px; 
+    padding-bottom: 60px;
   }
 
   .drive-item:hover {
@@ -77,7 +77,7 @@ $page = 'deleted-files';
   }
 
   .file-item i.fimg {
-    font-size: 80px; 
+    font-size: 80px;
     color: #718096;
     transition: all 0.3s ease;
   }
@@ -94,7 +94,7 @@ $page = 'deleted-files';
     top: 16px;
     right: 16px;
     color: #718096;
-    z-index: 10; 
+    z-index: 10;
   }
 
   .status-icon.text-success {
@@ -106,7 +106,7 @@ $page = 'deleted-files';
   }
 
   .top-star-icon {
-    font-size: 20px; 
+    font-size: 20px;
     color: #cbd5e0;
     background: transparent;
     border: none;
@@ -116,11 +116,11 @@ $page = 'deleted-files';
     margin: 0;
     line-height: 1;
     transition: all 0.3s ease;
-    
-    position: absolute; 
-    top: 16px; 
-    left: 16px; 
-    z-index: 10; 
+
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 10;
 
     width: 32px;
     height: 32px;
@@ -189,7 +189,7 @@ $page = 'deleted-files';
   .actions-container .restore-btn {
     width: 36px;
     height: 36px;
-    
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -333,25 +333,24 @@ $page = 'deleted-files';
 
   /* List View Styles */
   #driveItemsContainer.list-view {
-    flex-direction: column; 
-    padding: 0; 
-    gap: 8px; 
+    flex-direction: column;
+    padding: 0;
+    gap: 8px;
   }
 
   #driveItemsContainer.list-view .drive-item {
-    width: 100%; 
-    height: auto; 
-    flex-direction: row; 
-    align-items: center; 
-    justify-content: flex-start; 
-    padding: 16px 20px; 
-    box-shadow: 0 4px 16px rgba(0,0,0,0.05); 
-    margin-bottom: 0; 
-    padding-bottom: 16px; 
-    display: grid;
-    grid-template-columns: auto 50px 1fr 1fr 1fr auto auto auto;
-    gap: 16px;
-    align-items: center;
+    height: auto !important;
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(229, 62, 62, 0.2) !important;
+    padding: 16px 20px !important;
+    justify-content: flex-start !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
+    display: grid !important;
+    grid-template-columns: auto 50px 1fr 1fr 1fr auto auto auto !important;
+    gap: 16px !important;
+    align-items: center !important;
   }
 
   #driveItemsContainer.list-view .drive-item .icon-wrapper {
@@ -365,7 +364,7 @@ $page = 'deleted-files';
   }
 
   #driveItemsContainer.list-view .drive-item i.fimg {
-    font-size: 32px; 
+    font-size: 32px;
   }
 
   #driveItemsContainer.list-view .drive-item .top-star-icon {
@@ -382,7 +381,7 @@ $page = 'deleted-files';
 
   #driveItemsContainer.list-view .drive-item .drive-title {
     grid-column: 3;
-    margin: 0; 
+    margin: 0;
     font-size: 16px;
     font-weight: 600;
     text-align: left;
@@ -395,7 +394,7 @@ $page = 'deleted-files';
 
   #driveItemsContainer.list-view .drive-item .drive-details:nth-of-type(1) {
     grid-column: 4;
-    margin: 0; 
+    margin: 0;
     font-size: 14px;
     color: #4a5568;
     font-weight: 500;
@@ -409,7 +408,7 @@ $page = 'deleted-files';
 
   #driveItemsContainer.list-view .drive-item .drive-details:nth-of-type(2) {
     grid-column: 5;
-    margin: 0; 
+    margin: 0;
     font-size: 14px;
     color: #4a5568;
     font-weight: 500;
@@ -434,24 +433,24 @@ $page = 'deleted-files';
 
   #driveItemsContainer.list-view .drive-item .actions-container {
     grid-column: 7 / 9;
-    position: static; 
+    position: static;
     margin: 0;
-    padding: 0; 
-    border: none; 
-    height: auto; 
+    padding: 0;
+    border: none;
+    height: auto;
     background: transparent;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 8px; 
+    gap: 8px;
     width: auto;
   }
 
   #driveItemsContainer.list-view .actions-container .delete-btn,
   #driveItemsContainer.list-view .actions-container .rename-btn,
   #driveItemsContainer.list-view .actions-container .restore-btn {
-    width: 36px; 
-    height: 36px; 
+    width: 36px;
+    height: 36px;
     font-size: 16px;
     margin: 0;
   }
@@ -657,11 +656,11 @@ $page = 'deleted-files';
       width: 180px;
       height: 200px;
     }
-    
+
     .az-content {
       padding: 20px;
     }
-    
+
     #driveItemsContainer.list-view .drive-item {
       padding: 12px 16px;
     }
@@ -713,15 +712,15 @@ $page = 'deleted-files';
                         <div class="icon-wrapper">
                             <i class="fa fa-file fimg deleted-icon" data-id="{{ $doc->document_id }}"></i>
                         </div>
-                        
+
                         <div class="deleted-overlay">
                             <span class="deleted-badge">DELETED</span>
                         </div>
-                        
+
                         <div class="drive-title deleted-title">{{ $doc->document_title }}</div>
                         <div class="drive-details deleted-details">{{ $doc->creator->name }} | {{ $doc->creator->department->dept_name }}</div>
                         <div class="drive-details deleted-details">Deleted: {{ $doc->deleted_at ? $doc->deleted_at->format('d M Y h:i A') : $doc->updated_at->format('d M Y h:i A') }}</div>
-                        
+
                         <div class="actions-container deleted-actions">
                             <button class="restore-btn restore-file" data-id="{{ $doc->document_id }}" title="Restore File">
                                 <i class="fas fa-undo"></i>
@@ -903,11 +902,11 @@ $page = 'deleted-files';
             if (searchTerm) {
                 clearSearchBtn.show();
                 let visibleCount = 0;
-                
+
                 items.each(function() {
                     const title = $(this).find('.drive-title').text().toLowerCase();
                     const details = $(this).find('.drive-details').text().toLowerCase();
-                    
+
                     if (title.includes(searchTerm) || details.includes(searchTerm)) {
                         $(this).show();
                         visibleCount++;
@@ -969,10 +968,10 @@ $page = 'deleted-files';
                 Swal.fire('Error', 'Folder name is required', 'error');
                 return;
             }
-            
+
             $('#createFolderModal').modal('hide');
             clearModals();
-            
+
             Swal.fire({
                 title: 'Creating Folder...',
                 didOpen: () => Swal.showLoading()
@@ -992,7 +991,7 @@ $page = 'deleted-files';
             e.stopPropagation();
             const id = $(this).data('id');
             const fileName = $(this).closest('.drive-item').find('.drive-title').text();
-            
+
             Swal.fire({
                 title: 'Restore File?',
                 text: `Are you sure you want to restore "${fileName}"?`,
@@ -1035,7 +1034,7 @@ $page = 'deleted-files';
             e.stopPropagation();
             const id = $(this).data('id');
             const fileName = $(this).closest('.drive-item').find('.drive-title').text();
-            
+
             Swal.fire({
                 title: 'Permanently Delete?',
                 text: `Are you sure you want to permanently delete "${fileName}"? This action cannot be undone.`,
@@ -1075,7 +1074,7 @@ $page = 'deleted-files';
         // Restore All Files
         $('#restoreAllBtn').click(function() {
             const fileCount = $('.deleted-item').length;
-            
+
             if (fileCount === 0) {
                 Swal.fire('Info', 'No files to restore.', 'info');
                 return;
@@ -1120,7 +1119,7 @@ $page = 'deleted-files';
         // Empty Bin
         $('#emptyBinBtn').click(function() {
             const fileCount = $('.deleted-item').length;
-            
+
             if (fileCount === 0) {
                 Swal.fire('Info', 'Bin is already empty.', 'info');
                 return;

@@ -54,7 +54,7 @@ $page = 'dashboard';
     border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 20px 16px;
     box-sizing: border-box;
-    padding-bottom: 60px; 
+    padding-bottom: 60px;
   }
 
   /* Increase height for rejected items */
@@ -83,7 +83,7 @@ $page = 'dashboard';
   }
 
   .file-item i.fimg {
-    font-size: 80px; 
+    font-size: 80px;
     color: #718096;
     transition: all 0.3s ease;
   }
@@ -100,7 +100,7 @@ $page = 'dashboard';
     top: 16px;
     right: 16px;
     color: #718096;
-    z-index: 10; 
+    z-index: 10;
   }
 
   .status-icon.text-success {
@@ -112,7 +112,7 @@ $page = 'dashboard';
   }
 
   .top-star-icon {
-    font-size: 20px; 
+    font-size: 20px;
     color: #cbd5e0;
     background: transparent;
     border: none;
@@ -122,11 +122,11 @@ $page = 'dashboard';
     margin: 0;
     line-height: 1;
     transition: all 0.3s ease;
-    
-    position: absolute; 
-    top: 16px; 
-    left: 16px; 
-    z-index: 10; 
+
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 10;
 
     width: 32px;
     height: 32px;
@@ -194,7 +194,7 @@ $page = 'dashboard';
   .actions-container .rename-btn {
     width: 36px;
     height: 36px;
-    
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -334,25 +334,39 @@ $page = 'dashboard';
   /* List View Rejected Items */
   #driveItemsContainer.list-view .rejected-item {
     height: auto !important;
-    opacity: 0.9;
-    background: rgba(255, 255, 255, 0.85) !important;
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.9) !important;
     backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(229, 62, 62, 0.3) !important;
+    border: 1px solid rgba(229, 62, 62, 0.2) !important;
     padding: 16px 20px !important;
     justify-content: flex-start !important;
-    box-shadow: 0 4px 16px rgba(229, 62, 62, 0.1) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
+    display: grid !important;
+    grid-template-columns: auto 50px 1fr 1fr 1fr auto auto auto !important;
+    gap: 16px !important;
+    align-items: center !important;
   }
 
   #driveItemsContainer.list-view .rejected-item:hover {
     transform: translateY(-2px) !important;
-    background: rgba(255, 255, 255, 0.9) !important;
-    box-shadow: 0 6px 20px rgba(229, 62, 62, 0.15) !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08) !important;
     cursor: not-allowed;
   }
 
   #driveItemsContainer.list-view .rejected-item .icon-wrapper {
-    margin-bottom: 0;
-    padding-top: 0;
+    grid-column: 1;
+    margin: 0;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #driveItemsContainer.list-view .rejected-item i.fimg {
+    font-size: 32px;
+    color: #a0a0a0;
   }
 
   #driveItemsContainer.list-view .rejected-overlay {
@@ -376,35 +390,75 @@ $page = 'dashboard';
     left: auto;
     transform: none;
     background: transparent !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    border: none;
   }
 
   #driveItemsContainer.list-view .rejected-title {
+    grid-column: 3;
     margin: 0 !important;
     text-align: left;
+    color: #2d3748 !important;
+    opacity: 1 !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    padding: 0 !important;
+    line-height: 1.3 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
   }
 
   #driveItemsContainer.list-view .rejected-details {
     margin: 0 !important;
     text-align: left;
+    color: #4a5568 !important;
+    opacity: 1 !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    padding: 0 !important;
+    line-height: 1.2 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  #driveItemsContainer.list-view .rejected-details:nth-of-type(1) {
+    grid-column: 4;
+  }
+
+  #driveItemsContainer.list-view .rejected-details:nth-of-type(2) {
+    grid-column: 5;
+  }
+
+  #driveItemsContainer.list-view .rejected-status-icon {
+    color: #e53e3e;
+    font-size: 20px;
+    opacity: 0.9;
   }
 
   /* List View Styles */
   #driveItemsContainer.list-view {
-    flex-direction: column; 
-    padding: 0; 
-    gap: 8px; 
+    flex-direction: column;
+    padding: 0;
+    gap: 8px;
   }
 
   #driveItemsContainer.list-view .drive-item {
-    width: 100%; 
-    height: auto; 
-    flex-direction: row; 
-    align-items: center; 
-    justify-content: flex-start; 
-    padding: 16px 20px; 
-    box-shadow: 0 4px 16px rgba(0,0,0,0.05); 
-    margin-bottom: 0; 
-    padding-bottom: 16px; 
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 16px 20px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    margin-bottom: 0;
+    padding-bottom: 16px;
     display: grid;
     grid-template-columns: auto 50px 1fr 1fr 1fr auto auto auto;
     gap: 16px;
@@ -422,7 +476,7 @@ $page = 'dashboard';
   }
 
   #driveItemsContainer.list-view .drive-item i.fimg {
-    font-size: 32px; 
+    font-size: 32px;
   }
 
   #driveItemsContainer.list-view .drive-item .top-star-icon {
@@ -439,7 +493,7 @@ $page = 'dashboard';
 
   #driveItemsContainer.list-view .drive-item .drive-title {
     grid-column: 3;
-    margin: 0; 
+    margin: 0;
     font-size: 16px;
     font-weight: 600;
     text-align: left;
@@ -452,7 +506,7 @@ $page = 'dashboard';
 
   #driveItemsContainer.list-view .drive-item .drive-details:nth-of-type(1) {
     grid-column: 4;
-    margin: 0; 
+    margin: 0;
     font-size: 14px;
     color: #4a5568;
     font-weight: 500;
@@ -466,7 +520,7 @@ $page = 'dashboard';
 
   #driveItemsContainer.list-view .drive-item .drive-details:nth-of-type(2) {
     grid-column: 5;
-    margin: 0; 
+    margin: 0;
     font-size: 14px;
     color: #4a5568;
     font-weight: 500;
@@ -491,23 +545,23 @@ $page = 'dashboard';
 
   #driveItemsContainer.list-view .drive-item .actions-container {
     grid-column: 7 / 9;
-    position: static; 
+    position: static;
     margin: 0;
-    padding: 0; 
-    border: none; 
-    height: auto; 
+    padding: 0;
+    border: none;
+    height: auto;
     background: transparent;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 8px; 
+    gap: 8px;
     width: auto;
   }
 
   #driveItemsContainer.list-view .actions-container .delete-btn,
   #driveItemsContainer.list-view .actions-container .rename-btn {
-    width: 36px; 
-    height: 36px; 
+    width: 36px;
+    height: 36px;
     font-size: 16px;
     margin: 0;
   }
@@ -623,7 +677,7 @@ $page = 'dashboard';
   }
 
   .modal-backdrop.show {
-    opacity: 0.5;
+    opacity: 0 !important;
   }
 
   .modal-title {
@@ -665,11 +719,11 @@ $page = 'dashboard';
       width: 180px;
       height: 200px;
     }
-    
+
     .az-content {
       padding: 20px;
     }
-    
+
     #driveItemsContainer.list-view .drive-item {
       padding: 12px 16px;
     }
@@ -716,7 +770,7 @@ $page = 'dashboard';
                 </div>
 
                 <div id="driveItemsContainer" class="drive-container">
-                                
+
                     @foreach($folders as $folder)
                     <div class="drive-item folder-item">
                         <div class="icon-wrapper">
@@ -749,7 +803,7 @@ $page = 'dashboard';
                         ->whereDate('filesharing_expiry_date', '>=', now())
                         ->whereIn('status',['Pending','Approved'])
                         ->first();
-                        
+
                         // Check if the file is starred by the current user
                         $starredDoc = DB::table('starred_documents')
                             ->where('user_id', auth()->user()->id)
@@ -800,15 +854,15 @@ $page = 'dashboard';
                         <div class="icon-wrapper">
                             <i class="fa fa-file fimg rejected-icon" style="color: #a0a0a0;"></i>
                         </div>
-                        
+
                         <div class="rejected-overlay">
                             <span class="rejected-badge">REJECTED</span>
                         </div>
-                        
+
                         <div class="drive-title rejected-title">{{ $doc->document_title }}</div>
                         <div class="drive-details rejected-details">{{ $doc->creator->name }} | {{ $doc->creator->department->dept_name }}</div>
                         <div class="drive-details rejected-details">{{ $doc->updated_at->format('d M Y h:i A') }}</div>
-                        
+
                         <div class="actions-container rejected-actions">
                             <i class="fas fa-times-circle rejected-status-icon"></i>
                         </div>
@@ -1014,11 +1068,11 @@ $page = 'dashboard';
                 Swal.fire('Error', 'Folder name is required', 'error');
                 return;
             }
-            
+
             // Close modal first
             $('#createFolderModal').modal('hide');
             clearModals();
-            
+
             Swal.fire({
                 title: 'Creating Folder...',
                 didOpen: () => Swal.showLoading()

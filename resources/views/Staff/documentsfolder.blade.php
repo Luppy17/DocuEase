@@ -11,123 +11,125 @@ $page = 'dashboard';
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+:root {
+    --primary-color: #4f46e5;
+    --primary-hover: #4338ca;
+    --success-color: #10b981;
+    --success-hover: #059669;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f9fafb;
+    --border-color: #e5e7eb;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
 * {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--bg-secondary);
     min-height: 100vh;
-    margin: 0;
-    padding: 0;
+    color: var(--text-primary);
 }
 
 .az-content-body {
-    padding-top: 30px;
+    padding: 2rem 0;
     min-height: 100vh;
 }
 
 /* Header Section */
 .page-header {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    border-radius: 20px;
-    padding: 25px 30px;
-    margin-bottom: 30px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: var(--bg-primary);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
 }
 
 .page-header h4 {
-    color: #2d3748;
+    color: var(--text-primary);
     font-weight: 600;
+    font-size: 1.25rem;
     margin: 0;
-    font-size: 1.5rem;
 }
 
 .back-btn {
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: var(--primary-color);
     color: white;
     border: none;
-    border-radius: 12px;
-    padding: 12px 20px;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
     font-weight: 500;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .back-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    background: var(--primary-hover);
     color: white;
+    transform: translateY(-1px);
 }
 
 .upload-btn {
-    background: linear-gradient(135deg, #48bb78, #38a169);
+    background: var(--success-color);
     color: white;
     border: none;
-    border-radius: 12px;
-    padding: 12px 24px;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
     font-weight: 500;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .upload-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+    background: var(--success-hover);
     color: white;
+    transform: translateY(-1px);
 }
 
 /* Drive Container */
 .drive-container {
-    padding: 0;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 24px;
-    justify-content: start;
+    gap: 1.5rem;
+    padding: 0;
 }
 
 /* Drive Items */
 .drive-item {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: var(--bg-primary);
+    border-radius: 1rem;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
     text-align: center;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     position: relative;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    padding: 24px 20px;
+    transition: all 0.2s ease;
+    padding: 1.5rem;
     height: 260px;
     overflow: hidden;
 }
 
-.drive-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #667eea, #764ba2);
-    border-radius: 20px 20px 0 0;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
 .drive-item:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-    background: rgba(255, 255, 255, 1);
-}
-
-.drive-item:hover::before {
-    opacity: 1;
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
 }
 
 .drive-item .icon-wrapper {
@@ -135,114 +137,103 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 16px;
+    margin-bottom: 1rem;
 }
 
 .folder-item i.fimg {
-    font-size: 64px;
-    color: #667eea;
-    transition: all 0.3s ease;
+    font-size: 3rem;
+    color: var(--primary-color);
+    transition: all 0.2s ease;
 }
 
 .file-item i.fimg {
-    font-size: 64px;
-    color: #718096;
-    transition: all 0.3s ease;
+    font-size: 3rem;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
 }
 
 .drive-item:hover .folder-item i.fimg {
-    color: #764ba2;
+    color: var(--primary-hover);
     transform: scale(1.1);
 }
 
 .drive-item:hover .file-item i.fimg {
-    color: #667eea;
+    color: var(--primary-color);
     transform: scale(1.1);
 }
 
 /* Status Icons */
 .status-icon {
-    font-size: 20px;
+    font-size: 1.25rem;
     position: absolute;
-    top: 20px;
-    right: 20px;
-    color: #a0aec0;
+    top: 1rem;
+    right: 1rem;
+    color: var(--text-secondary);
     z-index: 10;
-    padding: 8px;
+    padding: 0.5rem;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: var(--bg-primary);
+    box-shadow: var(--shadow-sm);
 }
 
 .status-icon.text-success {
-    color: #48bb78 !important;
-    background: rgba(72, 187, 120, 0.1);
+    color: var(--success-color) !important;
 }
 
 .status-icon.text-warning {
-    color: #ed8936 !important;
-    background: rgba(237, 137, 54, 0.1);
+    color: var(--warning-color) !important;
 }
 
 /* Star Icon */
 .top-star-icon {
-    font-size: 18px;
-    color: #a0aec0;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
+    font-size: 1rem;
+    color: var(--text-secondary);
+    background: var(--bg-primary);
     border: none;
     outline: none;
     cursor: pointer;
-    padding: 8px;
-    margin: 0;
-    line-height: 1;
-    transition: all 0.3s ease;
+    padding: 0.5rem;
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 1rem;
+    left: 1rem;
     z-index: 10;
-    width: 36px;
-    height: 36px;
+    width: 2.25rem;
+    height: 2.25rem;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
 }
 
 .top-star-icon.starred {
-    color: #f6e05e;
-    background: rgba(246, 224, 94, 0.2);
+    color: #fbbf24;
 }
 
 .top-star-icon:hover {
-    color: #f6e05e;
-    background: rgba(246, 224, 94, 0.2);
+    color: #fbbf24;
     transform: scale(1.1);
 }
 
 /* Text Elements */
 .drive-title {
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 600;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    margin: 12px 0 8px 0;
-    color: #2d3748;
-    line-height: 1.4;
+    margin: 0.5rem 0;
+    color: var(--text-primary);
 }
 
 .drive-details {
-    font-size: 13px;
-    color: #718096;
-    font-weight: 400;
-    margin: 4px 0;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin: 0.25rem 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    line-height: 1.3;
 }
 
 /* Actions Container */
@@ -251,20 +242,17 @@ body {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 56px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    border-top: 1px solid rgba(226, 232, 240, 0.8);
-    border-radius: 0 0 20px 20px;
-    box-sizing: border-box;
-    z-index: 2;
+    height: 3.5rem;
+    background: var(--bg-primary);
+    border-top: 1px solid var(--border-color);
+    border-radius: 0 0 1rem 1rem;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    padding: 0 20px;
+    padding: 0 1rem;
     opacity: 0;
     transform: translateY(10px);
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
 }
 
 .drive-item:hover .actions-container {
@@ -274,63 +262,43 @@ body {
 
 .actions-container .delete-btn,
 .actions-container .rename-btn {
-    width: 36px;
-    height: 36px;
+    width: 2.25rem;
+    height: 2.25rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 16px;
-    color: #718096;
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(226, 232, 240, 0.6);
-    border-radius: 10px;
+    font-size: 1rem;
+    color: var(--text-secondary);
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
     outline: none;
     cursor: pointer;
-    padding: 0;
-    margin-left: 8px;
-    transition: all 0.3s ease;
-    flex-shrink: 0;
-    backdrop-filter: blur(10px);
-}
-
-.actions-container button:first-child {
-    margin-left: 0;
+    margin-left: 0.5rem;
+    transition: all 0.2s ease;
 }
 
 .actions-container .delete-btn:hover {
-    color: #e53e3e;
-    background: rgba(229, 62, 62, 0.1);
-    border-color: rgba(229, 62, 62, 0.3);
-    transform: scale(1.05);
+    color: var(--danger-color);
+    border-color: var(--danger-color);
+    background: #fee2e2;
 }
 
 .actions-container .rename-btn:hover {
-    color: #3182ce;
-    background: rgba(49, 130, 206, 0.1);
-    border-color: rgba(49, 130, 206, 0.3);
-    transform: scale(1.05);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+    background: #eef2ff;
 }
 
 /* Rejected Items */
 .rejected-file {
-    background: rgba(255, 255, 255, 0.7) !important;
-    border: 2px solid rgba(229, 62, 62, 0.3) !important;
+    background: #fef2f2 !important;
+    border-color: var(--danger-color) !important;
     cursor: not-allowed !important;
-    opacity: 0.8;
-}
-
-.rejected-file::before {
-    background: linear-gradient(90deg, #e53e3e, #c53030) !important;
-    opacity: 1 !important;
-}
-
-.rejected-file:hover {
-    transform: none !important;
-    box-shadow: 0 8px 32px rgba(229, 62, 62, 0.15) !important;
 }
 
 .rejected-file .fimg {
-    color: #a0a0a0 !important;
+    color: var(--text-secondary) !important;
     opacity: 0.7;
 }
 
@@ -338,197 +306,164 @@ body {
     opacity: 1 !important;
     transform: translateY(0) !important;
     justify-content: center !important;
-    background: rgba(229, 62, 62, 0.05) !important;
+    background: #fee2e2 !important;
 }
 
 .rejected-badge {
-    color: #e53e3e;
-    font-weight: 700;
-    font-size: 14px;
-    letter-spacing: 0.5px;
+    color: var(--danger-color);
+    font-weight: 600;
+    font-size: 0.875rem;
     text-transform: uppercase;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.375rem;
+    background: #fee2e2;
 }
 
 /* Modal Styling */
-.modal {
-    z-index: 1050 !important;
-}
-
-.modal-backdrop {
-    z-index: 1040 !important;
-    background-color: rgba(0, 0, 0, 0.6);
-}
-
-.modal-dialog {
-    z-index: auto !important;
-    pointer-events: auto;
-}
-
 .modal-content {
-    border-radius: 20px;
+    border-radius: 1rem;
     border: none;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-    background: white !important;
-    backdrop-filter: blur(20px);
-    overflow: hidden;
+    box-shadow: var(--shadow-lg);
 }
 
 .modal-header {
-    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-    padding: 24px 30px 20px;
-    background: linear-gradient(135deg, #f7fafc, #edf2f7);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.5rem;
+    background: var(--bg-primary);
 }
 
 .modal-title {
     font-weight: 600;
-    color: #2d3748;
+    color: var(--text-primary);
     font-size: 1.25rem;
 }
 
 .modal-body {
-    padding: 30px;
+    padding: 1.5rem;
 }
 
 .modal-footer {
-    border-top: 1px solid rgba(226, 232, 240, 0.8);
-    padding: 20px 30px 24px;
-    background: #f7fafc;
-}
-
-.close {
-    font-size: 1.5rem;
-    font-weight: 300;
-    color: #718096;
-    opacity: 1;
-    background: transparent;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.close:hover {
-    color: #2d3748;
-    opacity: 1;
-    transform: scale(1.1);
+    border-top: 1px solid var(--border-color);
+    padding: 1.5rem;
+    background: var(--bg-secondary);
 }
 
 /* Form Controls */
 .form-group label {
     font-weight: 500;
-    color: #4a5568;
-    margin-bottom: 8px;
-    font-size: 14px;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
 }
 
 .form-control {
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 12px 16px;
-    font-size: 15px;
-    transition: all 0.3s ease;
-    background: #f7fafc;
-    color: #2d3748;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    background: var(--bg-primary);
+    color: var(--text-primary);
 }
 
 .form-control:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    background: white;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
     outline: none;
 }
 
 .form-control-file {
-    border: 2px dashed #e2e8f0;
-    border-radius: 12px;
-    padding: 20px;
-    background: #f7fafc;
-    transition: all 0.3s ease;
+    border: 2px dashed var(--border-color);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    background: var(--bg-secondary);
+    transition: all 0.2s ease;
     cursor: pointer;
 }
 
 .form-control-file:hover {
-    border-color: #667eea;
-    background: rgba(102, 126, 234, 0.05);
+    border-color: var(--primary-color);
+    background: #eef2ff;
 }
 
 .form-text {
-    color: #718096;
-    font-size: 12px;
-    margin-top: 6px;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    margin-top: 0.375rem;
 }
 
 /* Button Styles */
 .btn {
-    border-radius: 12px;
-    padding: 12px 24px;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
     font-weight: 500;
-    font-size: 15px;
-    transition: all 0.3s ease;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
     border: none;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: var(--primary-color);
     color: white;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    background: var(--primary-hover);
     color: white;
+    transform: translateY(-1px);
 }
 
 .btn-secondary {
-    background: #e2e8f0;
-    color: #4a5568;
-    border: 2px solid #e2e8f0;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
 }
 
 .btn-secondary:hover {
-    background: #cbd5e0;
-    transform: translateY(-1px);
-    color: #4a5568;
+    background: var(--border-color);
+    color: var(--text-primary);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .drive-container {
         grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-        gap: 16px;
-        padding: 0 16px;
+        gap: 1rem;
+        padding: 0 1rem;
     }
-    
+
     .drive-item {
         height: 240px;
-        padding: 20px 16px;
+        padding: 1.25rem;
     }
-    
+
     .page-header {
-        padding: 20px;
-        margin: 0 16px 20px;
+        padding: 1.25rem;
+        margin: 0 1rem 1.5rem;
     }
-    
+
     .az-content-body {
-        padding-top: 20px;
+        padding: 1.5rem 0;
     }
 }
 
 @media (max-width: 576px) {
     .drive-container {
         grid-template-columns: 1fr;
-        gap: 12px;
+        gap: 1rem;
     }
-    
+
     .page-header {
-        margin: 0 8px 16px;
-        padding: 16px;
+        margin: 0 0.5rem 1rem;
+        padding: 1rem;
     }
-    
+
     .page-header h4 {
-        font-size: 1.25rem;
+        font-size: 1.125rem;
     }
 }
 
@@ -556,7 +491,7 @@ body {
 .drive-item:nth-child(6) { animation-delay: 0.6s; }
 </style>
 
-<div class="az-content az-content-dashboard">
+<div class="az-content az-content-dashboard" style="width: 100%;">
   <div class="container">
     <div class="az-content-body">
       <!-- Header Section -->
@@ -568,7 +503,7 @@ body {
             </button>
             <h4>Current Folder: {{ $currentFolder->folder_name ?? 'My Drive' }}</h4>
           </div>
-          <button class="btn upload-btn" id="uploadFileBtn">
+          <button class="btn upload-btn ml-3" id="uploadFileBtn">
             <i class="fas fa-upload mr-2"></i>Upload File
           </button>
         </div>
@@ -625,7 +560,7 @@ body {
           @endif
 
           <i class="fa {{ $doc->status == 'Approved' ? 'fa-check-circle text-success' : ($doc->status == 'Rejected' ? 'fa-times-circle' : 'fa-clock text-warning') }} status-icon" style="{{ $doc->status == 'Rejected' ? 'color: #e53e3e !important;' : '' }}"></i>
-          
+
           <div class="drive-title">{{ $doc->document_title }}</div>
           <div class="drive-details">{{ $doc->creator->name }} | {{ $doc->creator->department->dept_name }}</div>
           <div class="drive-details">{{ $doc->updated_at->format('d M Y h:i A') }}</div>

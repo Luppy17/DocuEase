@@ -43,7 +43,7 @@ public function renameFolder(Request $request, $id)
     $logs->created_by = auth()->user()->id;
     $logs->reference = $folder->folder_name.' to '.$request->folder_name;
     $logs->save();
-    
+
     $folder->update(['folder_name' => $request->folder_name, 'updated_by' => auth()->id()]);
 
     return response()->json(['message' => 'Folder renamed successfully.']);
@@ -63,7 +63,7 @@ public function deleteFolder($id)
     DocumentFolder::findOrFail($id)->delete();
 
     Document::where('document_folder',$id)->delete();
-    
+
     return response()->json(['message' => 'Folder deleted successfully.']);
 }
 
@@ -88,7 +88,7 @@ public function upload(Request $request)
     $logs->reference = $request->document_title;
     $logs->save();
 
- 
+
         $emails = DB::table('users')
         ->where('dept_id', $document->dept_id)
         ->whereIn('role', ['Manager','File Admin'])
@@ -161,7 +161,7 @@ public function openFolder($id)
 
 public function editFile(Request $request, $id) {
     $document = Document::findOrFail($id);
-    
+
     if ($request->filled('document_title')) {
 
         $logs = new document_logs;
@@ -250,29 +250,137 @@ public function getFile($id) {
     }
 
     public function showStarredFiles()
-{
-    $user = auth()->user();
+    {
+        $user = auth()->user();
 
-    // Get starred document IDs for the current user
-    $starredDocumentIds = StarredDocument::where('user_id', $user->id)
+        // Get starred document IDs for the current user
+        $starredDocumentIds = StarredDocument::where('user_id', $user->id)
                                           ->pluck('document_id');
 
-    // Fetch the actual document details for these IDs
-    $documents = Document::whereIn('document_id', $starredDocumentIds)
+        // Fetch the actual document details for these IDs
+        $documents = Document::whereIn('document_id', $starredDocumentIds)
                          ->with(['creator.department']) // Eager load relationships
                          ->orderBy('updated_at', 'desc')
                          ->get();
 
-    // You might also want to pass an empty collection for folders, or remove the folder loop
-    $folders = collect(); // No folders on a starred files page
+        // You might also want to pass an empty collection for folders, or remove the folder loop
+        $folders = collect(); // No folders on a starred files page
 
-    // Pass necessary variables to the view
-    // Assuming 'dashboard' is your page variable for sidebar active state
-    $page = 'starred-files'; // Set the page variable for the sidebar
-    $currentFolder = null; // No specific current folder for this page
+        // Pass necessary variables to the view
+        // Assuming 'dashboard' is your page variable for sidebar active state
+        $page = 'starred-files'; // Set the page variable for the sidebar
+        $currentFolder = null; // No specific current folder for this page
 
-    return view('staff.starred-files', compact('documents', 'folders', 'page', 'currentFolder'));
-}
+        return view('staff.starred-files', compact('documents', 'folders', 'page', 'currentFolder'));
+    }
 
+    /**
+     * Restore a soft-deleted file
+     */
+    public function restoreFile($id)
+    {
+        $document = Document::withTrashed()->findOrFail($id);
 
+        // Check if user has permission to restore this file
+        if ($document->created_by !== auth()->id()) {
+            return response()->json(['message' => 'You do not have permission to restore this file.'], 403);
+        }
+
+        $document->restore();
+
+        $logs = new document_logs;
+        $logs->action = "RESTORE FILE";
+        $logs->owner_id = $document->created_by;
+        $logs->created_by = auth()->user()->id;
+        $logs->reference = $document->document_title;
+        $logs->save();
+
+        return response()->json(['message' => 'File restored successfully.']);
+    }
+
+    /**
+     * Restore all soft-deleted files for the current user
+     */
+    public function restoreAllFiles()
+    {
+        $documents = Document::withTrashed()
+            ->where('created_by', auth()->id())
+            ->whereNotNull('deleted_at')
+            ->get();
+
+        foreach ($documents as $document) {
+            $document->restore();
+
+            $logs = new document_logs;
+            $logs->action = "RESTORE FILE";
+            $logs->owner_id = $document->created_by;
+            $logs->created_by = auth()->user()->id;
+            $logs->reference = $document->document_title;
+            $logs->save();
+        }
+
+        return response()->json(['message' => 'All files restored successfully.']);
+    }
+
+    /**
+     * Permanently delete a file
+     */
+    public function permanentlyDeleteFile($id)
+    {
+        $document = Document::withTrashed()->findOrFail($id);
+
+        // Check if user has permission to delete this file
+        if ($document->created_by !== auth()->id()) {
+            return response()->json(['message' => 'You do not have permission to delete this file.'], 403);
+        }
+
+        // Delete the physical file from storage
+        if ($document->document_file) {
+            Storage::delete($document->document_file);
+        }
+
+        // Log the permanent deletion
+        $logs = new document_logs;
+        $logs->action = "PERMANENTLY DELETE FILE";
+        $logs->owner_id = $document->created_by;
+        $logs->created_by = auth()->user()->id;
+        $logs->reference = $document->document_title;
+        $logs->save();
+
+        // Force delete the record
+        $document->forceDelete();
+
+        return response()->json(['message' => 'File permanently deleted.']);
+    }
+
+    /**
+     * Empty the trash bin for the current user
+     */
+    public function emptyBin()
+    {
+        $documents = Document::withTrashed()
+            ->where('created_by', auth()->id())
+            ->whereNotNull('deleted_at')
+            ->get();
+
+        foreach ($documents as $document) {
+            // Delete the physical file from storage
+            if ($document->document_file) {
+                Storage::delete($document->document_file);
+            }
+
+            // Log the permanent deletion
+            $logs = new document_logs;
+            $logs->action = "PERMANENTLY DELETE FILE";
+            $logs->owner_id = $document->created_by;
+            $logs->created_by = auth()->user()->id;
+            $logs->reference = $document->document_title;
+            $logs->save();
+
+            // Force delete the record
+            $document->forceDelete();
+        }
+
+        return response()->json(['message' => 'Trash bin emptied successfully.']);
+    }
 }

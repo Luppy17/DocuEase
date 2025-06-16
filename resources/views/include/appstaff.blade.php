@@ -1,33 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <title>DocuEase</title>
-
-    <link href="{{ asset('lib/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('lib/ionicons/css/ionicons.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('lib/typicons.font/typicons.css') }}" rel="stylesheet">
-    <link href="{{ asset('lib/flag-icon-css/css/flag-icon.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-    <link rel="stylesheet" href="{{ asset('css/azia.css') }}">
-
-    <link rel="icon" type="image/x-icon" href="{{ asset('app.png') }}">
-
-    <style>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>DocuEase</title>
+        <link href="{{ asset('lib/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('lib/ionicons/css/ionicons.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('lib/typicons.font/typicons.css') }}" rel="stylesheet">
+        <link href="{{ asset('lib/flag-icon-css/css/flag-icon.min.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ asset('css/azia.css') }}">
+        <link rel="icon" type="image/x-icon" href="{{ asset('app.png') }}">
+        <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-        .swal2-container{
+        .swal2-container {
             z-index: 9999999 !important;
         }
-        footer{
+
+        footer {
             z-index: 9999 !important;
         }
-        html, body {
+
+        html,
+        body {
             height: 100%;
             margin: 0;
             padding: 0;
@@ -305,7 +302,7 @@
             height: 230px;
             margin: 12px;
             border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             text-align: center;
             cursor: pointer;
             display: inline-block;
@@ -330,14 +327,14 @@
             transition: all 0.3s ease;
         }
 
-        .folder-item i.fimg{
+        .folder-item i.fimg {
             font-size: 80px;
             color: #667eea;
             margin-top: 15px;
             transition: all 0.3s ease;
         }
 
-        .file-item i.fimg{
+        .file-item i.fimg {
             font-size: 80px;
             color: #718096;
             margin-top: 15px;
@@ -422,7 +419,7 @@
             background: rgba(49, 130, 206, 0.1);
         }
 
-        .delete-btn{
+        .delete-btn {
             font-size: 20px;
         }
 
@@ -440,7 +437,7 @@
             align-items: center;
             text-align: left;
             padding: 16px 20px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
             background: rgba(255, 255, 255, 0.9);
             border-radius: 12px;
         }
@@ -524,11 +521,12 @@
             justify-content: center;
             flex-shrink: 0;
         }
-        
+
         .list-view .drive-item .delete-btn {
             grid-column: 8;
         }
 
+        /* Dropdown Menu Styles from appfadmin */
         .custom-profile-dropdown {
             position: relative;
             display: inline-block;
@@ -631,29 +629,6 @@
             border-radius: 50%;
         }
 
-        .user-avatar-container .camera-icon {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            background: #667eea;
-            color: white;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            border: 2px solid white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .user-avatar-container .camera-icon:hover {
-            background: #764ba2;
-            transform: scale(1.05);
-        }
-
         .user-greeting {
             font-size: 20px;
             font-weight: 600;
@@ -710,26 +685,38 @@
             text-decoration: none;
         }
 
-        .google-storage-info {
-            display: flex;
-            align-items: center;
-            padding: 12px 24px;
-            font-size: 13px;
-            color: #718096;
-            border-bottom: 1px solid rgba(74, 85, 104, 0.1);
-        }
-
-        .google-storage-info i {
-            margin-right: 15px;
-            font-size: 18px;
-            color: #667eea;
-        }
-
         .google-menu-footer {
             padding: 12px 24px;
             text-align: center;
             font-size: 12px;
             color: #718096;
+        }
+
+        .az-header .az-img-user {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .az-header .az-img-user:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .az-header .az-img-user img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .footer-link {
@@ -748,152 +735,140 @@
             color: #cbd5e0;
         }
 
-        .az-dropdown-header, .az-header-profile {
-        }
-
-        /* Header Profile Styling */
-        .az-header .az-img-user {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            overflow: hidden;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            color: white;
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .az-header .az-img-user:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
-        }
-
-        .az-header .az-img-user img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
         /* Responsive Design */
         @media (max-width: 768px) {
             .az-sidebar {
                 width: 250px;
             }
-            
+
             .drive-item {
                 width: 160px;
                 height: 190px;
             }
-            
+
             .az-content {
                 padding: 20px;
             }
         }
-    </style>
-
-</head>
-
-<body>
-
-    <div class="app-container">
-        <div class="az-header">
-            <div class="container">
-                <div class="az-header-left">
-                    <a href="" id="azMenuShow" class="az-header-menu-icon d-lg-none"><span></span></a>
-                </div>
-                <div class="az-header-menu">
-                    <div class="az-header-menu-header">
-                        <a href="" class="close">&times;</a>
+        </style>
+    </head>
+    <body>
+        <div class="app-container">
+            <div class="az-header">
+                <div class="container">
+                    <div class="az-header-left">
+                        <a href="" id="azMenuShow" class="az-header-menu-icon d-lg-none">
+                            <span></span>
+                        </a>
                     </div>
-                    <ul class="nav">
-                    </ul>
-                </div>
-                <div class="az-header-right" style="margin-right: -110px;">
-                    <div class="d-flex align-items-center">
-                        <div class="pr-3 d-none d-md-block" style="color: #2d3748; font-weight: 600;">
-                            {{ auth()->user()->name ?? 'Guest' }}
+                    <div class="az-header-menu">
+                        <div class="az-header-menu-header">
+                            <a href="" class="close">&times;</a>
                         </div>
-                    <div class="custom-profile-dropdown">
-            <a href="#" id="profileDropdownToggle" class="az-img-user">
-                <img src="{{ asset('10337609.png') }}" alt="">
-            </a>
-            <div id="profileDropdownMenu" class="custom-dropdown-menu google-style-menu">
-                <div class="google-profile-header">
-                    <span class="email-address">{{ auth()->user()->email ?? 'user@example.com' }}</span>
-                    <button type="button" class="close-btn" aria-label="Close" id="closeDropdownBtn">
-                        <i class="fas fa-times"></i> </button>
-                </div>
-                <div class="google-profile-main-info">
-                    <div class="user-avatar-container">
-                        <img src="{{ asset('10337609.png') }}" alt="User Avatar" class="user-main-avatar">
-                        <span class="camera-icon"><i class="fas fa-camera"></i></span>
+                        <ul class="nav"></ul>
                     </div>
-                    <h6 class="user-greeting">Hi, {{ auth()->user()->name ?? 'User' }}!</h6>
-                    <a href="/my-account" class="manage-account-btn">Manage your Account</a>
-                </div>
-
-                <div class="google-menu-actions">
-                    <a href="/logout" class="action-item sign-out-btn">
-                        <i class="fas fa-sign-out-alt"></i> Sign out
-                    </a>
-                </div>
-
-                <div class="google-menu-footer">
-                </div>
-            </div>
-        </div>
+                    <div class="az-header-right" style="margin-right: -110px;">
+                        <div class="d-flex align-items-center">
+                            <div class="pr-3 d-none d-md-block" style="color: #2d3748; font-weight: 600;">
+                                {{ auth()->user()->name ?? 'Guest' }}
+                            </div>
+                            <div class="custom-profile-dropdown">
+                                <a href="#" id="profileDropdownToggle" class="az-img-user">
+                                    <img src="{{ auth()->user()->profile_photo_url }}" alt="">
+                                </a>
+                                <div id="profileDropdownMenu" class="custom-dropdown-menu google-style-menu">
+                                    <div class="google-profile-header">
+                                        <span class="email-address">{{ auth()->user()->email ?? 'user@example.com' }}</span>
+                                        <button type="button" class="close-btn" aria-label="Close" id="closeDropdownBtn">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                <div class="google-profile-main-info">
+                                    <div class="user-avatar-container">
+                                        <img src="{{ auth()->user()->profile_photo_url }}" alt="User Avatar" class="user-main-avatar">
+                                    </div>
+                                    <h6 class="user-greeting">Hi, {{ auth()->user()->name ?? 'User' }}!</h6>
+                                    <a href="/my-account" class="manage-account-btn">Manage your Account</a>
+                                </div>
+                                <div class="google-menu-actions">
+                                    <a href="/logout" class="action-item sign-out-btn">
+                                    <i class="fas fa-sign-out-alt"></i> Sign out </a>
+                                </div>
+                                <div class="google-menu-footer"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="app-body-wrapper">
             <div class="az-sidebar">
-                <div class="az-sidebar-header">
-                   <h4><img src="{{ asset('app.png') }}" style="width:40px; height:auto; text-transform:none;">&nbsp;DocuEase</h4>
-                </div><div class="sidebar-new-button-section">
-               
-                </div>
-
-                <div class="az-sidebar-nav">
-                    <nav class="nav">
-<a href="/dashboard-staff" class="nav-link">
-    <i class="fas fa-home"></i> Home
-</a>
-
-<div class="sub-nav">
-    <a href="/uploaded-by-me" class="nav-link">
-        <i class="fas fa-upload"></i> Uploaded by me
-    </a>
-    <a href="/recent-files" class="nav-link">
-        <i class="fas fa-history"></i> Recent
-    </a>
-    <a href="/starred-files" class="nav-link">
-        <i class="fas fa-star"></i> Starred
-    </a>
-    <a href="/approved-files" class="nav-link">
-        <i class="fas fa-check-circle"></i> Approved documents
-    </a>
-    <a href="/rejected-files" class="nav-link">
-        <i class="fas fa-times-circle"></i> Rejected documents
-    </a>
-    <a href="/deleted-files" class="nav-link">
-        <i class="fas fa-trash-alt"></i> Bin
-    </a>
-</div>
-
-<a href="/system-logs" class="nav-link">
-    <i class="fas fa-clipboard-list"></i> Logs
-</a>
-                    </nav>
-                </div>
-                
-                <div class="az-sidebar-footer">
-                    Copyright © DocuEase 2025
+            <div class="az-sidebar-header">
+                <h4>
+                <img src="{{ asset('app.png') }}" style="width:40px; height:auto; text-transform:none;">&nbsp;DocuEase
+                </h4>
+            </div>
+            <div class="sidebar-new-button-section"></div>
+            <div class="az-sidebar-nav">
+                <nav class="nav">
+                <a href="/dashboard-staff" class="nav-link">
+                    <i class="fas fa-home"></i> Home </a>
+                <div class="sub-nav">
+                    <a href="/uploaded-by-me" class="nav-link">
+                    <i class="fas fa-upload"></i> Uploaded by me </a>
+                    <a href="/recent-files" class="nav-link">
+                    <i class="fas fa-history"></i> Recent </a>
+                    <a href="/starred-files" class="nav-link">
+                    <i class="fas fa-star"></i> Starred </a>
+                    <a href="/approved-files" class="nav-link">
+                    <i class="fas fa-check-circle"></i> Approved documents </a>
+                    <a href="/rejected-files" class="nav-link">
+                    <i class="fas fa-times-circle"></i> Rejected documents </a>
+                    <a href="/deleted-files" class="nav-link">
+                    <i class="fas fa-trash-alt"></i> Bin </a>
                 </div>
             </div>
+            <div class="az-sidebar-footer"> Copyright © DocuEase 2025 </div>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const profileDropdownToggle = document.getElementById('profileDropdownToggle');
+                const profileDropdownMenu = document.getElementById('profileDropdownMenu');
+                const closeDropdownBtn = document.getElementById('closeDropdownBtn');
+
+                // Toggle dropdown when clicking the profile picture
+                if (profileDropdownToggle && profileDropdownMenu) {
+                    profileDropdownToggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        // profileDropdownMenu.classList.toggle('show');
+                        profileDropdownMenu.style.display = 'block';
+                    });
+
+                    // Close dropdown when clicking the close button
+                    if (closeDropdownBtn) {
+                        closeDropdownBtn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            profileDropdownMenu.style.display = 'none';
+                        });
+                    }
+
+                    // Close dropdown when clicking outside
+                    document.addEventListener('click', function(e) {
+                        if (!profileDropdownToggle.contains(e.target) && !profileDropdownMenu.contains(e.target)) {
+                            profileDropdownMenu.style.display = 'none';
+                        }
+                    });
+
+                    // Close dropdown when clicking menu items
+                    profileDropdownMenu.querySelectorAll('.action-item, .manage-account-btn').forEach(item => {
+                        item.addEventListener('click', function() {
+                            profileDropdownMenu.style.display = 'none';
+                        });
+                    });
+                }
+            });
+        </script>
+    </body>
+</html>
