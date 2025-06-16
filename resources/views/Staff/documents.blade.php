@@ -1089,8 +1089,38 @@ $page = 'dashboard';
                 showCancelButton: true,
                 confirmButtonText: 'Upload',
                 showLoaderOnConfirm: true,
+                didOpen: () => {
+                    // Add event listener to file input
+                    const fileInput = document.querySelector('.swal2-file');
+                    fileInput.addEventListener('change', function() {
+                        console.log('File selected:', this.files[0]);
+                    });
+                },
                 preConfirm: () => {
-                    const formData = new FormData(document.getElementById('uploadForm'));
+                    const form = document.getElementById('uploadForm');
+                    const formData = new FormData();
+
+                    // Get the file input from SweetAlert2 modal
+                    const fileInput = document.querySelector('.swal2-file');
+                    const titleInput = document.querySelector('.swal2-input');
+
+                    // Check if file is selected
+                    if (!fileInput || !fileInput.files || !fileInput.files.length) {
+                        Swal.showValidationMessage('Please select a file to upload');
+                        return false;
+                    }
+
+                    // Check if title is entered
+                    if (!titleInput || !titleInput.value.trim()) {
+                        Swal.showValidationMessage('Please enter a document title');
+                        return false;
+                    }
+
+                    // Add file and title to FormData
+                    formData.append('document_file', fileInput.files[0]);
+                    formData.append('document_title', titleInput.value.trim());
+                    formData.append('_token', '{{ csrf_token() }}');
+
                     return $.ajax({
                         url: '/files/upload',
                         type: 'POST',
